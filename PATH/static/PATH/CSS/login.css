@@ -63,6 +63,7 @@ body {
 }
 .login-form input[type="text"],
 .login-form input[type="password"],
+.login-form select,
 .login-form button {
     width: 100%;
     padding: 20px;
@@ -87,6 +88,7 @@ body {
 
 }
 .login-form input[type="text"]:focus,
+.login-form select:focus,
 .login-form input[type="password"]:focus {
     outline: none; /* Removes the default focus outline */
     border-color: white; /* Optionally change border color on focus */
@@ -118,6 +120,7 @@ body {
 @media (max-width: 480px) {
     .login-form input[type="text"],
     .login-form input[type="password"],
+    .login-form select,
     .login-form button {
         padding: 15px; /* Decrease padding for smaller screens */
         margin-bottom: 20px; /* Adjust margin for smaller screens */

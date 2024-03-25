@@ -3,7 +3,29 @@ body {
   font-family: Arial, sans-serif;
   overflow-x: hidden;
 }
+.edit-btn {
+  padding: 16px 32px;
+  margin-left: 10px;
+  border: 1px solid #428bca; /* Example color for edit button border */
+  background: #5bc0de; /* Example color for edit button background */
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 7px;
+}
 
+.delete-btn {
+  padding: 16px 32px;
+  margin-left: 10px;
+  border: 1px solid #d9534f; /* Example color for delete button border */
+  background: #d9534f; /* Example color for delete button background */
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 7px;
+}
 
 .background-image {
   background-image: url("../images/bghome.png"); /* Replace 'background.jpg' with your image path */

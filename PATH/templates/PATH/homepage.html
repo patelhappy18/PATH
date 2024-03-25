@@ -101,7 +101,7 @@
                         <li><a href="rental/dashboard/">Rental car</a></li>
           {% endif %}
           <li><a href="{% url 'car_ride:home' %}">Rides</a></li>
-            <li><a href="#">Parcel service</a></li>
+            <li><a href="{% url 'parcel_service:homepage' %}">Parcel service</a></li>
         </ul>
         <div class="navbar-buttons">
             {% if request.user.username %}
@@ -199,10 +199,10 @@
 
           </div>
           <div class="input-group2">
-            <input type="time" placeholder="Pickup Time">
+            <input type="time" id="pickupDate" placeholder="Pickup Time">
           </div>
           <div class="input-group2">
-            <input type="time" placeholder="Return Time">
+            <input type="time" id="returnDate" placeholder="Return Time">
 
           </div>
           <button class="book-now">Book Now</button>
@@ -353,13 +353,14 @@
       </h2>
       <div class=" contact-width">
         <div class="contact-container">
+        <form class="contactus" action="" method="post" >
+            {% csrf_token %}
+          <input type="text" name="name" placeholder="Your Name">
+          <input type="email" name="email" placeholder="Your Email">
+          <input type="text"  name="msg" placeholder="Your Message">
 
-          <input type="text" placeholder="Your Name">
-          <input type="email" placeholder="Your Email">
-          <input type="text" placeholder="Your Message">
-
-          <button class="send-message">Send A Message</button>
-
+          <button type="submit" class="send-message">Send A Message</button>
+        </form>
         </div>
         <div class="contact-image">
           <img src="../../static/PATH/images/handkey.jpg" alt="">
@@ -367,6 +368,7 @@
       </div>
     </div>
   </section>
+
 </body>
 
 </html>

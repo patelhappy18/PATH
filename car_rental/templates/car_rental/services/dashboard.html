@@ -67,6 +67,10 @@
                 <h1 class="inner-heading">
                     Find your rental car
                 </h1>
+                <div id="dateErrorMessage" style="display: none; color: red;">
+                <div id="pickupTimeErrorMessage" style="display: none; color: red;"></div>
+                <div id="returnTimeErrorMessage" style="display: none; color: red;"></div>
+                </div>
                 <p class="inner-paragraph">
                     Carent, is ready to serve the best experience in car rental.
                 </p>
@@ -269,4 +273,48 @@
             document.getElementById("carFilterForm").submit();
         });
     });
+ document.addEventListener("DOMContentLoaded", function () {
+    const bookNowButton = document.querySelector('.book-now');
+    const pickupDateInput = document.getElementsByName('rental_start_date')[0];
+    const returnDateInput = document.getElementsByName('rental_end_date')[0];
+    const errorMessage = document.getElementById('dateErrorMessage');
+
+    bookNowButton.addEventListener('click', function (event) {
+        const pickupDate = new Date(pickupDateInput.value);
+        const returnDate = new Date(returnDateInput.value);
+
+        // Check if pickup and return dates are not empty
+        if (pickupDateInput.value === "" || returnDateInput.value === "") {
+            event.preventDefault(); // Prevent form submission
+            errorMessage.innerText = "Please enter both pickup and return dates";
+            errorMessage.style.display = 'block';
+        } else {
+            // Hide error message if dates are entered
+            errorMessage.style.display = 'none';
+
+            // Check if pickup date is before today's date
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set hours to 00:00:00 to compare dates without time
+            if (pickupDate.getTime() < today.getTime()) {
+                event.preventDefault(); // Prevent form submission
+                errorMessage.innerText = "Pickup date cannot be before today's date";
+                errorMessage.style.display = 'block';
+            } else {
+                // Hide error message if pickup date is valid
+                errorMessage.style.display = 'none';
+
+                // Check if return date is before pickup date
+                if (returnDate <= pickupDate) {
+                    event.preventDefault(); // Prevent form submission
+                    errorMessage.innerText = "Return date must be after pickup date";
+                    errorMessage.style.display = 'block';
+                } else {
+                    // Hide error message if return date is valid
+                    errorMessage.style.display = 'none';
+                }
+            }
+        }
+    });
+});
+
 </script>
