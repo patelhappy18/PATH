@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
@@ -11,6 +14,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from PATH.models import Customuser
+from PATH_project import settings
 from .forms import CarForm, RentalReservationForm, AddNewUser, LoginForm, CarRentalForm, LicenseDetailForm
 from car_rental.models import Car, RentalReservation, RentalInvoice, CustomUser, LicenseDetail
 from django.urls import reverse_lazy
@@ -20,6 +24,56 @@ from django.urls import reverse_lazy
 
 def showUserDashboard(request):
     return render(request, 'car_rental/services/userDashboard.html')
+
+def deleteReservation(request, reservationId):
+    reservation = get_object_or_404(RentalReservation, id=reservationId)
+    reservation.delete()
+    return redirect('getReservations')
+
+def editMyReservation(request, reservationId):
+    reservation = get_object_or_404(RentalReservation, id=reservationId)
+    rental_end_date = reservation.rental_end_date
+    rental_start_date = reservation.rental_start_date
+    # Format the date as YYYY-MM-DD
+    formatted_end_date = rental_end_date.strftime("%Y-%m-%d")
+    formatted_start_date = rental_start_date.strftime("%Y-%m-%d")
+
+    pickup_time = reservation.pickup_time
+    return_time = reservation.return_time
+
+    # Format the time object as HH:MM (24-hour format)
+    formatted_pickup_time = pickup_time.strftime("%H:%M")
+    formatted_return_time = return_time.strftime("%H:%M")
+
+    reservation.pickup_time=formatted_pickup_time
+    reservation.return_time=formatted_return_time
+    reservation.rental_end_date = formatted_end_date
+    reservation.rental_start_date = formatted_start_date
+    return render(request, "car_rental/services/dashboard.html", {"edit_reservation": reservation})
+
+
+def myProfile(request):
+
+    if request.method == 'GET':
+        customer = Customuser.objects.get(username__username=request.session['username'])
+        return render(request, "car_rental/services/myProfile.html", {'current_userDetails': customer})
+
+    if request.method == 'POST':
+        myProfile = get_object_or_404(Customuser, username__username=request.session['username'])
+        myProfile.firstname = request.POST['firstname']
+        myProfile.email=request.POST['email']
+        myProfile.gender=request.POST['gender']
+        myProfile.mobile=request.POST['mobile']
+        myProfile.address=request.POST['address']
+        myProfile.city=request.POST['city']
+        myProfile.state=request.POST['state']
+
+        myProfile.save()
+        # form = ProfileUpdateForm(request.POST, username__username=request.session['username'])
+        return redirect('myProfile')  # Redirect to profile page after successful update
+
+
+
 
 def getReservations(request):
     customer = Customuser.objects.get(username__username=request.session['username'])
@@ -42,7 +96,9 @@ def getReservations(request):
         taxes = (float(reservation.perDayCharge * num_days) + float(25)) * float(
             0.13)  # Add 1 to include both start and end dates
         reservation.taxes = taxes
-
+        reservation.start_date = rental_start_date
+        reservation.end_date = rental_end_date
+        reservation.unique_id = reservation.id
         reservation.total = float(reservation.taxes) + float(25) + (float(car.daily_rate) * float(num_days))
 
     return render(request, 'car_rental/services/rentSuccess.html',
@@ -84,11 +140,34 @@ def rental_invoice_detail(request, invoice_number):
     return render(request, 'rental_invoice_detail.html', {'invoice': invoice})
 
 def create_car(request):
+    if request.method == 'GET':
+        return render(request, 'car_rental/services/addMyCar.html')
+
     if request.method == 'POST':
         form = CarForm(request.POST, request.FILES)
+
         if form.is_valid():
-            form.save()
-            # Redirect to a success page or another view
+            car_instance = form.save(commit=False)
+            uploaded_photo = request.FILES['photo']
+            file_name = uploaded_photo.name
+            file_path = os.path.join(settings.MEDIA_ROOT, 'car_photos', file_name)
+
+            # Save the file to the desired location
+            with open(file_path, 'wb') as destination:
+                for chunk in uploaded_photo.chunks():
+                    destination.write(chunk)
+
+            # Set the photo field of the car instance to the file path
+            car_instance.photo = os.path.join('car_photos', file_name)
+
+            # Now save the car instance to commit the changes
+            car_instance.save()
+            # form.save()
+
+        data = Car.objects.all()
+        return render(request, 'car_rental/services/dashboard.html')
+
+
     else:
         form = CarForm()
     return render(request, 'car_rental/create_car.html', {'form': form})
@@ -162,6 +241,51 @@ def bookRentalCar(request):
 
         if request.method == "POST":
 
+            # if request.POST['editReservationId'] is not None:
+            if 'editReservationId' in request.POST:
+
+                reservation = get_object_or_404(RentalReservation, id=request.POST['editReservationId'])
+
+                # Update the attributes of the fetched object
+                reservation.car_type = request.POST['car_type']
+                reservation.rental_start_date = request.POST['rental_start_date']
+                reservation.rental_end_date = request.POST['rental_end_date']
+                reservation.pickup_time = request.POST['pickup_time']
+                reservation.return_time = request.POST['return_time']
+                reservation.pickup_location = request.POST['pickup_location']
+
+                # reservation.car_id = car
+                # reservation.customer = customer
+                reservation.save()
+
+                reservations = RentalReservation.objects.filter(
+                    customer__username__username=request.session['username'])
+
+                for reservation in reservations:
+                    car = Car.objects.get(pk=reservation.car_id.pk)
+
+                    rental_start_date = reservation.rental_start_date
+                    rental_end_date = reservation.rental_end_date
+
+                    # Calculate the number of days by subtracting the start date from the end date
+                    num_days = (rental_end_date - rental_start_date).days + 1
+                    reservation.num_days = num_days
+                    reservation.perDayCharge = car.daily_rate
+                    reservation.netCharge = (reservation.perDayCharge * num_days)
+                    reservation.insurance = 25
+                    taxes = (float(reservation.perDayCharge * num_days) + float(25)) * float(
+                        0.13)  # Add 1 to include both start and end dates
+                    reservation.taxes = taxes
+                    reservation.unique_id = reservation.id
+                    reservation.image = car.photo.url
+                    reservation.total = float(reservation.taxes) + float(25) + (
+                            float(car.daily_rate) * float(num_days))
+
+                return render(request, 'car_rental/services/rentSuccess.html',
+                              {'reservations': reservations})
+
+
+                # Save the object to update it in the database
             # if request.session.get('car_type') is None:
 
             rental_start_date = request.POST['rental_start_date']
@@ -231,6 +355,7 @@ def bookRentalCar(request):
                         taxes=(float(reservation.perDayCharge*num_days)+float(25))*float(0.13)# Add 1 to include both start and end dates
                         reservation.taxes = taxes
                         reservation.image = car.photo.url
+                        reservation.unique_id = reservation.id
                         reservation.total = float(reservation.taxes) + float(25) + (
                                     float(car.daily_rate) * float(num_days))
 
@@ -400,6 +525,7 @@ def license_detail_view(request,car_id,car_type):
                 reservation.perDayCharge = car.daily_rate
                 reservation.netCharge = (reservation.perDayCharge * num_days)
                 reservation.insurance = 25
+                reservation.unique_id = reservation.id
                 reservation.image = car.photo.url
                 taxes = (float(reservation.perDayCharge * num_days) + float(25)) * float(
                     0.13)  # Add 1 to include both start and end dates
@@ -480,6 +606,7 @@ def license_detail_view(request,car_id,car_type):
                 reservation.perDayCharge = car.daily_rate
                 reservation.netCharge = (reservation.perDayCharge * num_days)
                 reservation.insurance = 25
+                reservation.unique_id = reservation.id
                 reservation.image = car.photo.url
                 taxes = (float(reservation.perDayCharge * num_days) + float(25)) * float(
                     0.13)  # Add 1 to include both start and end dates

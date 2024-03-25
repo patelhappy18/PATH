@@ -6,12 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'car_rental/css/RentalCar.css' %}" />
+    <link rel="stylesheet" href="{% static 'car_rental/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'car_rental/css/login.css' %}" />
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-         <link rel="stylesheet" href="{% static 'car_rental/css/RentalCar.css' %}" />
-         <link rel="stylesheet" href="{% static 'car_rental/css/home.css' %}" />
-
 
   <style>
     /* Basic styling */
@@ -108,36 +111,11 @@
     min-height: 100vh;
     background-color: #f0f0f0;
   }
-    .delete-btn {
-  padding: 16px 32px;
-  margin-left: 10px;
-  border: 1px solid #d9534f; /* Example color for delete button border */
-  background: #d9534f; /* Example color for delete button background */
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 7px;
-}
-.edit-btn {
-  padding: 16px 32px;
-  margin-left: 10px;
-  border: 1px solid #428bca; /* Example color for edit button border */
-  background: #5bc0de; /* Example color for edit button background */
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 7px;
-}
-
-
 
   </style>
-
 </head>
-<body>
 <header>
+{#    <div class="background-image">#}
         <nav class="navbar">
             <div class="containers">
               <div class="navbar-logo">
@@ -160,41 +138,59 @@
               </div>
             </div>
           </nav>
+
+
 </header>
 
-           <div>
-                <nav class="" style="position: fixed; margin-top: 120px; background-color: #0c0b0b; width: 100%; text-align: center; align-items: center; padding: 30px 50px; left: 0">
-                <div class="" style="align-items: center; text-align: center; ">
-{#                  <div class="">#}
-{#                    <h1 style="">Car Rental</h1>#}
-{#                  </div>#}
-                  <ul class="navbar-menu" style="display: flex; justify-content: center">
-                    <li><a href="{% url 'userDashboard' %}" >Dashboard</a></li>
-                    <li><a href="{% url 'dashboard' %}" >Rental car</a></li>
-                    <li><a href="{% url 'getReservations' %}" class="active">My Rentals</a></li>
-                    <li><a href="">My Profile</a></li>
-                  </ul>
-                  <div class="navbar-buttons">
+<body>
+    <section style="width: 100%; height: 100vh;">
+        {% if request.user.username %}
+               <br><br><br><br><br><br><br>
+                    <nav class="" style="background-color: #0c0b0b;height: 73px">
+                        <div class="containers">
+                          <div class="navbar-logo">
+                            <h1 style="">Car Rental</h1>
+                          </div>
+                          <ul class="navbar-menu">
+                            <li><a href="{% url 'userDashboard' %}"  >Dashboard</a></li>
+                            <li><a href="{% url 'dashboard' %}">Rent a car</a></li>
+                            <li><a href="#" class="active">My Rentals</a></li>
+                            <li><a href="{% url 'myProfile' %}">My Profile</a></li>
+                          </ul>
+                          <div class="navbar-buttons">
 
-                  </div>
-                </div>
-          </nav>
-{#           </div>#}
+                          </div>
+                        </div>
+                  </nav>
+         {% else %}
+         {% endif %}
 
-  {% if reservations %}
+          {% if reservations %}
 
   <div style="margin-top: 140px" class="car-reserve" >
       {% for details in reservations %}
+{#        <form action="" method="POST">#}
             <div class="container" >
               <img src="{{ details.image }}" alt="Reserved Car" class="car-image">
               <div class="header">
                 <h2>{{ details.car_id }}</h2>
               </div>
+{#              <div class="car-details">#}
+{#                <p>{{ details.car_id }}</p>#}
+{#              </div>#}
               <div class="rental-summary">
                 <h3>Your Receipt</h3>
                 <div class="item">
                   <span>({{ details.num_days }} day)</span>
                   <span>${{ details.netCharge }}</span>
+                </div>
+                  <div class="item">
+                  <span>Rental Start Date</span>
+                  <span>{{ details.rental_start_date }}</span>
+                </div>
+                  <div class="item">
+                  <span>Rental End Date</span>
+                  <span>{{ details.rental_end_date }}</span>
                 </div>
                 <div class="item">
                   <span>Insurance Add on</span>
@@ -210,20 +206,22 @@
                   <span>${{ details.total }}.00</span>
                 </div>
               </div>
-                <button class="edit-btn">Edit Booking</button><br>
-                <button class="delete-btn">Delete Booking</button>
+              <a href="http://localhost:8000/car_rental/editMyReservation/{{ details.unique_id }}"><button class="edit-btn">Edit Booking</button></a>
+{#                <button type="submit" class="edit-btn">Edit Booking</button><br>#}
+               <a href="http://localhost:8000/car_rental/deleteReservation/{{ details.unique_id }}"><button class="delete-btn">Delete Booking</button></a>
              </div>
-     {% endfor %}
-  </div>
-
- {% else %}
+{#          </form>#}
+         {% endfor %}
+         {% else %}
           <div class="card-container">
             <img src="{% static 'PATH/images/smily.png' %}" alt="Status notification">
             <h1>Oops!</h1>
             <p style="color: white;">You have no rental reservations</p>
            <a href="http://localhost:8000/rental/dashboard/"><button class="signup-btn">Book Now</button></a>
           </div>
-  {% endif %}
-           </div>
-</>
+          {% endif %}
+    </div>
+    </section>
+
+</body>
 </html>

@@ -56,7 +56,7 @@ class Car(models.Model):
     ]
 
     car_type = models.CharField(max_length=20, choices=car_type_choices,default="sedan")
-
+    # car_owner = models.ForeignKey(Customuser, on_delete=models.CASCADE,default="")  # Use Customer model here
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.PositiveIntegerField()
@@ -66,6 +66,7 @@ class Car(models.Model):
     photo = models.ImageField(upload_to='car_photos/', null=True, blank=True)
     seats = models.PositiveIntegerField(default='5')
     fuel_type = models.CharField(max_length=20, choices=fuel_type_choices,default="petrol")
+    # hours = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.make} {self.model}        {self.car_type}"

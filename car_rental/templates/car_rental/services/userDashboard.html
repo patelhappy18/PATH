@@ -155,7 +155,7 @@
                             <li><a href="#" class="active" >Dashboard</a></li>
                             <li><a href="{% url 'dashboard' %}">Rent a car</a></li>
                             <li><a href="{% url 'getReservations' %}">My Rentals</a></li>
-                            <li><a href="">My Profile</a></li>
+                            <li><a href="{% url 'myProfile' %}">My Profile</a></li>
                           </ul>
                           <div class="navbar-buttons">
 
@@ -175,10 +175,127 @@
             <div class="container" style="height: 350px;"  >
               <img width="200px" height="240px" src="../../static/PATH/images/post_car.jpg" alt="Reserved Car" class="car-image">
                 <h1>Post your car for rent ?</h1>
-                <button class="signup-btn">Post Rental</button>
+                <a href="{% url 'addMyCar' %}"><button class="signup-btn">Post Rental</button></a>
              </div>
         </div>
         </div>
+
+    <section>
+    <div class="pres">
+      <div class="premium-services">
+        <div class="premium-services-content">
+          <div>
+            <div style="line-height: 13px;">
+              <h2 class="premium-heading">Our Premium Services
+                <hr />
+              </h2>
+            </div>
+            <p class="section-paragraph">PATH is a reputable car rental company that offers a wide range of useful
+              services for every taste.</p>
+          </div>
+          <div class="service-box-container">
+            <div class="service-box">
+              <img src="{% static 'PATH/images/square.png' %}" alt="Service Image" width="56" height="56">
+              <h3 class="service-heading">24 Hours Support</h3>
+              <p class="service-description">We support you all hours of the day.</p>
+            </div>
+            <div class="service-box">
+              <img src="{% static 'PATH/images/medal-star.png' %}" alt="Service Image" width="56" height="56">
+              <h3 class="service-heading">Qualified Assurance</h3>
+              <p class="service-description">We support you all hours of the day.</p>
+            </div>
+            <div class="service-box">
+              <img src="{% static 'PATH/images/gps.png' %}" alt="Service Image" width="56" height="56">
+              <h3 class="service-heading">GPS on Cars</h3>
+              <p class="service-description">We support you all hours of the day.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+
+    <div class="clients-say">
+      <h2 class="clients-say-heading">What Our Clients Say?
+        <hr>
+      </h2>
+      <div class="client-feedback">
+
+        <div class="client-feedback-left">
+          <button class="arrow" id="prevButton"><i style="color: #9961BA;" class="fa-solid fa-chevron-left fa-2xl"></i></button>
+        </div>
+        <div class="client-feedback-right" id="clientFeedbackRight">
+          <div class="client-box">
+            <div class="client-image">
+              <img src="{% static 'PATH/images/p1.png' %}" alt="Client Image" width="128" height="128">
+            </div>
+            <div class="client-details">
+              <h3 class="client-name">Kristin Watson</h3>
+              <p class="client-comment">I rented a car for a one-week trip from Carnet on the recommendation of my
+                friend. Actually, I am satisfied with them.</p>
+            </div>
+          </div>
+          <div class="client-box">
+            <div class="client-image">
+              <img src="{% static 'PATH/images/p2.png' %}" alt="Client Image" width="128" height="128">
+            </div>
+            <div class="client-details">
+              <h3 class="client-name">Robert Fox</h3>
+              <p class="client-comment">During my last trip, I used a PATH sport car . The car was completely clean
+                and had enough gas.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="client-feedback-left ">
+          <button class="arrow" id="nextButton"><i style="color: #9961BA;" class="fa-solid fa-chevron-right fa-2xl"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="number-count">
+      <div class="number-count-container">
+        <div class="count-container">
+          <h1>450+</h1>
+          <p>Cars For Rent</p>
+        </div>
+        <div class="count-container">
+          <h1>800+</h1>
+          <p>Happy Clients</p>
+        </div>
+        <div class="count-container">
+          <h1>750+</h1>
+          <p>Rental Locations</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section style="margin: 0 0 200px 0;">
+
+    <div class="contact-us">
+      <h2>Contact Us
+        <hr>
+      </h2>
+      <div class=" contact-width">
+        <div class="contact-container">
+
+          <input type="text" placeholder="Your Name">
+          <input type="email" placeholder="Your Email">
+          <input type="text" placeholder="Your Message">
+
+          <button class="send-message">Send A Message</button>
+
+        </div>
+        <div class="contact-image">
+          <img src="images/handkey.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
     </section>
+
 </body>
 </html>

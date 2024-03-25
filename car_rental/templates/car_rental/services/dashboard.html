@@ -28,6 +28,7 @@
                 <li><a href="{% url 'PATH:homepage' %}" >Home</a></li>
                 <li><a href="{% url 'dashboard' %}" class="active">Rental car</a></li>
                 <li><a href="{% url 'car_ride:home' %}">Rides</a></li>
+                  <li><a>{{ photo }}</a></li>
                   <li><a href="http://localhost:8000/parcel_service/homepage/">Parcel service</a></li>
               </ul>
               <div class="navbar-buttons">
@@ -52,7 +53,7 @@
                             <li><a href="{% url 'userDashboard' %}" >Dashboard</a></li>
                             <li><a href="#" class="active">Rent a car</a></li>
                             <li><a href="{% url 'getReservations' %}">My Rentals</a></li>
-                            <li><a href="">My Profile</a></li>
+                            <li><a href="{% url 'myProfile' %}">My Profile</a></li>
                           </ul>
                           <div class="navbar-buttons">
 
@@ -72,59 +73,108 @@
                 <div id="returnTimeErrorMessage" style="display: none; color: red;"></div>
                 </div>
                 <p class="inner-paragraph">
-                    Carent, is ready to serve the best experience in car rental.
+                    PATH, is ready to serve the best experience in car rental.
                 </p>
             </div>
         </div>
         <div style="width: 1200px;left: 205px; position: absolute;top: 400px; background: white;border-radius:20px ;">
             <div>
-                <form name="bookRentalCar" method="POST" action="http://localhost:8000/car_rental/bookaCar/">
+            <form name="bookRentalCar" method="POST" action="http://localhost:8000/car_rental/bookaCar/">
                     {% csrf_token %}
-                <div class="row">
-                    <div class="input-group1">
 
-                        <select name="pickup_location" required>
-                            <option value="" disabled selected>Pickup Location</option>
-                            <!-- Add options for pickup locations -->
-                            <option value="Windsor">Windsor</option>
-                            <option value="Toronto">Toronto</option>
-                            <option value="London">London</option>
-                          </select>
+                 {% if edit_reservation %}
+                    <div class="row">
+                            <div class="input-group1">
+                                <select name="pickup_location" required>
+                                    <option value="{{edit_reservation.pickup_location }}"  selected>{{edit_reservation.pickup_location }}</option>
+                                    <!-- Add options for pickup locations -->
+                                    <option value="Windsor">Windsor</option>
+                                    <option value="Toronto">Toronto</option>
+                                    <option value="London">London</option>
+                                  </select>
 
+                            </div>
+                            <div class="input-group1">
+                                <input value="{{edit_reservation.rental_start_date }}" name="rental_start_date" type="date" placeholder="Pickup Date">
+                              </div>
+
+                              <div class="input-group1">
+                                <input value="{{edit_reservation.rental_end_date }}" name="rental_end_date" type="date" placeholder="Return Date">
+                              </div>
                     </div>
-                    <div class="input-group1">
-                        <input name="rental_start_date" type="date" placeholder="Pickup Date">
-                      </div>
 
-                      <div class="input-group1">
-                        <input name="rental_end_date" type="date" placeholder="Return Date">
-                      </div>
-                </div>
-                <div class="row">
-                    {% if  car_id_selected  %}
-                       <input type="hidden" name="car_type" value="{{ car_type }}">
-                    {% else %}
-                      <div class="input-group2">
-                        <select name="car_type" required>
-                            <option value="" disabled selected>Car Type</option>
-                            <option value="sedan">Sedan</option>
-                            <option value="sports">Sports</option>
-                            <option value="suv">SUV</option>
-                            <option value="truck">Truck</option>
-                            <option value="van">Van</option>
-                          </select>
+                    <div class="row">
+                            <div class="input-group2">
+                                 {% if  car_id_selected  %}
+                                    <input name="car_type" value="{{ car_type }}" type="hidden">
+                                 {% else %}
+                                    <select name="car_type" required>
+                                    <option value="{{edit_reservation.car_type }}"  selected>Car Type</option>
+                                    <option value="sedan">Sedan</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="suv">SUV</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="van">Van</option>
+                                  </select>
+                                {% endif %}
+                            </div>
+                            <input name="editReservationId" value="{{ edit_reservation.id }}" type="hidden">
+                             <div class="input-group2">
+                                <input value="{{edit_reservation.pickup_time }}" name="pickup_time" type="time" placeholder="Pickup Time">
+                              </div>
+                              <div class="input-group2">
+                                <input value="{{edit_reservation.return_time }}" name="return_time" type="time" placeholder="Return Time">
+                              </div>
+                              <button type="submit" class="book-now">Book Now</button>
+                    </div>
 
-                     </div>
-                    {% endif %}
+                 {%else%}
 
-                    <div class="input-group2">
-                        <input name="pickup_time" type="time" placeholder="Pickup Time">
-                      </div>
-                      <div class="input-group2">
-                        <input name="return_time" type="time" placeholder="Return Time">
-                      </div>
-                      <button type="submit" class="book-now">Book Now</button>
-                </div>
+                    <div class="row">
+                            <div class="input-group1">
+                                <select name="pickup_location" required>
+                                    <option value="" disabled selected>Pickup Location</option>
+                                    <!-- Add options for pickup locations -->
+                                    <option value="Windsor">Windsor</option>
+                                    <option value="Toronto">Toronto</option>
+                                    <option value="London">London</option>
+                                  </select>
+
+                            </div>
+                            <div class="input-group1">
+                                <input name="rental_start_date" type="date" placeholder="Pickup Date">
+                              </div>
+
+                              <div class="input-group1">
+                                <input name="rental_end_date" type="date" placeholder="Return Date">
+                              </div>
+                    </div>
+
+                    <div class="row">
+                            <div class="input-group2">
+                                 {% if  car_id_selected  %}
+                                    <input name="car_type" value="{{ car_type }}" type="hidden">
+                                 {% else %}
+                                    <select name="car_type" required>
+                                    <option value="" disabled selected>Car Type</option>
+                                    <option value="sedan">Sedan</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="suv">SUV</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="van">Van</option>
+                                  </select>
+                                {% endif %}
+                            </div>
+                             <div class="input-group2">
+                                <input name="pickup_time" type="time" placeholder="Pickup Time">
+                              </div>
+                              <div class="input-group2">
+                                <input name="return_time" type="time" placeholder="Return Time">
+                              </div>
+                              <button type="submit" class="book-now">Book Now</button>
+                    </div>
+                {%endif%}
+
               </form>
             </div>
         </div>

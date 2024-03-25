@@ -35,8 +35,25 @@ urlpatterns = [
 
     path('car_rental/getReservations', views.getReservations,
          name='getReservations'),
+
     path('car_rental/userDashboard', views.showUserDashboard,
          name='userDashboard'),
+
+    # path('create_new_car/', views.create_car, name='create_car'),
+
+    path('car_rental/addMyCar', views.create_car,
+         name='addMyCar'),
+
+path('car_rental/deleteReservation/<int:reservationId>', views.deleteReservation,
+         name='deleteReservation'),
+
+path('car_rental/editMyReservation/<int:reservationId>', views.editMyReservation,
+         name='editMyReservation'),
+
+path('car_rental/myProfile', views.myProfile,
+         name='myProfile'),
+
+
 
 
 ]

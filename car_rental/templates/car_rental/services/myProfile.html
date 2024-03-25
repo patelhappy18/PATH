@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'car_rental/css/RentalCar.css' %}" />
+    <link rel="stylesheet" href="{% static 'car_rental/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'car_rental/css/login.css' %}" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+
+  <style>
+    /* Basic styling */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .car-reserve {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.car-reserve .container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 0px;
+    text-align: center;
+}
+
+    .container {
+      width: 600px;
+      margin: 50px auto;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Add a slight shadow */
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      font-size: 24px; /* Increase header size slightly */
+      margin-bottom: 10px;
+    }
+
+    .car-image {
+      display: block;
+      margin: 0 auto; /* Center image horizontally */
+      width: 300px;
+    }
+
+    .rental-summary {
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    .rental-summary .item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .contact-info a {
+      text-decoration: none;
+      color: #333;
+    }
+
+
+  .card-container {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(to bottom, #90EE90 0%, #007F00 100%);
+    border-radius: 30px;
+  }
+
+  .card-container h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .card-container p {
+    font-size: 1.1em;
+    color: #777;
+    text-align: center;
+  }
+
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+  }
+
+  </style>
+</head>
+<header>
+{#    <div class="background-image">#}
+        <nav class="navbar">
+            <div class="containers">
+              <div class="navbar-logo">
+                <img src="../../static/PATH/images/logo.png" alt="Logo" />
+              </div>
+              <ul class="navbar-menu">
+                <li><a href="{% url 'PATH:homepage' %}" >Home</a></li>
+                <li><a href="#" class="active">Rental car</a></li>
+                <li><a href="{% url 'car_ride:home' %}">Rides</a></li>
+                  <li><a href="http://localhost:8000/parcel_service/homepage/">Parcel service</a></li>
+              </ul>
+              <div class="navbar-buttons">
+                  {% if request.user.username %}
+                      <h1 style="color: white;">Welcome, {{ request.user.username }}!</h1>
+                      <a href="{% url 'PATH:logout' %}"><button class="signup-btn">Log Out</button></a>
+                  {% else %}
+                  <a href="{% url 'PATH:register' %}"><button class="signup-btn">Sign Up</button></a>
+                  <a href="{% url 'PATH:login' %}"> <button class="login-btn active">Login</button></a>
+                  {% endif %}
+              </div>
+            </div>
+          </nav>
+
+
+</header>
+
+<body>
+    <section style="width: 100%; height: 120vh;margin-top: 119px">
+        {% if request.user.username %}
+                    <nav class="" style="background-color: #0c0b0b;height: 73px">
+                        <div class="containers">
+                          <div class="navbar-logo">
+                            <h1 style="">Car Rental</h1>
+                          </div>
+                          <ul class="navbar-menu">
+                            <li><a href="{% url 'userDashboard' %}"  >Dashboard</a></li>
+                            <li><a href="{% url 'dashboard' %}">Rent a car</a></li>
+                            <li><a href="{% url 'getReservations' %}">My Rentals</a></li>
+                            <li><a href="#" class="active">My Profile</a></li>
+                          </ul>
+                          <div class="navbar-buttons">
+
+                          </div>
+                        </div>
+                  </nav>
+         {% else %}
+
+         {% endif %}
+
+
+
+    <div style="margin-top: 90px" class="bg-gray-200 flex justify-center items-center min-h-screen">
+        <div class="rounded-lg border bg-white text-gray-800 shadow-sm w-full max-w-lg">
+        <form action="{% url 'myProfile' %}" method="POST" class="grid gap-4" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="p-6">
+                <label class="block text-sm font-medium leading-none mb-2">Your Profile photo ( Optional )</label>
+                <div class="border border-gray-300 rounded-lg p-4 bg-gray-100 flex justify-center items-center">
+                    <img id="carImage" src="/placeholder.svg" alt="Car" class="max-w-full max-h-64 object-contain">
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid gap-4">
+                    <div>
+                            <label class="text-sm font-medium leading-none" for="make">FirstName</label>
+                            <input name="firstname" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                id="firstname" placeholder="Your FirstName" value="{{ current_userDetails.firstname }}" required="">
+                    </div>
+                    <div>
+                            <label class="text-sm font-medium leading-none" for="make">Username</label>
+                            <input name="username" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                id="username" placeholder="Your UserName" value="{{ current_userDetails.username }}" required="" disabled>
+                    </div>
+                    <div>
+                            <label class="text-sm font-medium leading-none" for="make">Email</label>
+                            <input name="email" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                id="email" placeholder="Your Registered Email" value="{{ current_userDetails.email }}" required="">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+
+{#                        <div>#}
+                            <select id="carType" name="gender">
+                                <option value="{{ current_userDetails.gender }}" selected>{{ current_userDetails.gender }}</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+{#                        </div>#}
+                        <div>
+                            <label class="text-sm font-medium leading-none" for="model">Mobile Number</label>
+                            <input name="mobile" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                id="mobile" placeholder="Model" required="" value="{{ current_userDetails.mobile }}">
+                        </div>
+                    </div>
+                       <div>
+                           <label class="text-sm font-medium leading-none" for="color">Address</label>
+                            <input name="address" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                id="address" value="{{ current_userDetails.address }}" placeholder="Your Registered Address" required="">
+                        </div>
+
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-medium leading-none" for="price">City</label>
+                        <input name="city" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            id="city" value="{{ current_userDetails.city }}" placeholder="your city" required="">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium leading-none" for="price">State</label>
+                        <input name="state" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            id="state" value="{{ current_userDetails.state }}" placeholder="your state" required="">
+                    </div>
+                </div>
+
+                    <div>
+                        <label class="text-sm font-medium leading-none" for="picture">Upload your profile photo (Optional)</label>
+                        <input name="photo" class="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            id="picture" type="file">
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+
+                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-500 text-white hover:bg-blue-600 h-11 rounded-md px-8">Save</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+<script>
+    // Function to display uploaded image
+    document.getElementById('picture').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('carImage').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    });
+</script>
+</html>
