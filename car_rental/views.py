@@ -49,7 +49,9 @@ def editMyReservation(request, reservationId):
     reservation.return_time=formatted_return_time
     reservation.rental_end_date = formatted_end_date
     reservation.rental_start_date = formatted_start_date
-    return render(request, "car_rental/services/dashboard.html", {"edit_reservation": reservation})
+
+    data = Car.objects.all()
+    return render(request, "car_rental/services/dashboard.html", {"edit_reservation": reservation, "cars":data})
 
 
 def myProfile(request):
@@ -165,7 +167,7 @@ def create_car(request):
             # form.save()
 
         data = Car.objects.all()
-        return render(request, 'car_rental/services/dashboard.html')
+        return render(request, 'car_rental/services/dashboard.html',{"cars":data})
 
 
     else:
