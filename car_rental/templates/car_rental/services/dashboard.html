@@ -16,6 +16,24 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <style>
+            .success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.success-message i {
+    margin-right: 5px;
+    color: #155724;
+}
+    </style>
+
 </head>
 <header>
     <div class="background-image">
@@ -63,7 +81,13 @@
          {% else %}
 
          {% endif %}
+
         <div class="box">
+            {% if msg %}
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i> {{ msg }}
+            </div>
+        {% endif %}
             <div class="inner-box" style="margin-bottom: 0;">
                 <h1 class="inner-heading">
                     Find your rental car

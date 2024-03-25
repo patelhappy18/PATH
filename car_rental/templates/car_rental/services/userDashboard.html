@@ -112,6 +112,47 @@
     background-color: #f0f0f0;
   }
 
+.notification-icon {
+    position: relative;
+    display: inline-block;
+    margin-right: 280px;
+    color: white;
+    font-size: 30px; /* Adjust the font-size to make the icon larger */
+
+}
+
+.notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.notification-dialog {
+    position: absolute;
+    top: calc(100% + 5px); /* Adjust the distance between the icon and the dialog box */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    display: none; /* Hide by default */
+    z-index: 999; /* Ensure it appears above other content */
+    color: black;
+    width: 300px;
+}
+
+.notification-icon:hover .notification-dialog {
+    display: block; /* Show when parent is hovered */
+}
+
+
+
   </style>
 </head>
 <header>
@@ -157,9 +198,22 @@
                             <li><a href="{% url 'getReservations' %}">My Rentals</a></li>
                             <li><a href="{% url 'myProfile' %}">My Profile</a></li>
                           </ul>
-                          <div class="navbar-buttons">
+                            <div class="notification-icon">
+                                <span class="icon">
+                                    <i class="fa fa-bell"></i>
+                                </span>
+                                <span class="notification-count">5</span>
+                                <div class="notification-dialog">
+                                    <!-- Content of the dialog box goes here -->
+                                    You have 5 new notifications.<br>
+                                    You have 5 new notifications.<br>
+                                    You have 5 new notifications.<br>
+                                    You have 5 new notifications.<br>
+                                    You have 5 new notifications.<br>
 
-                          </div>
+                                </div>
+                            </div>
+
                         </div>
                   </nav>
          {% else %}

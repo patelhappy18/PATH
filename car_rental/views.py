@@ -60,6 +60,7 @@ def myProfile(request):
 
     if request.method == 'POST':
         myProfile = get_object_or_404(Customuser, username__username=request.session['username'])
+
         myProfile.firstname = request.POST['firstname']
         myProfile.email=request.POST['email']
         myProfile.gender=request.POST['gender']
@@ -68,9 +69,23 @@ def myProfile(request):
         myProfile.city=request.POST['city']
         myProfile.state=request.POST['state']
 
+        if 'photo' in request.FILES:
+
+            uploaded_photo = request.FILES['photo']
+            file_name = uploaded_photo.name
+            file_path = os.path.join(settings.MEDIA_ROOT, 'car_photos', file_name)
+
+            with open(file_path, 'wb') as destination:
+                for chunk in uploaded_photo.chunks():
+                    destination.write(chunk)
+
+            myProfile.photo = os.path.join('car_photos', file_name)
+
+        details_updated = True
         myProfile.save()
-        # form = ProfileUpdateForm(request.POST, username__username=request.session['username'])
-        return redirect('myProfile')  # Redirect to profile page after successful update
+
+        customer = Customuser.objects.get(username__username=request.session['username'])
+        return render(request, "car_rental/services/myProfile.html", {'current_userDetails': customer,'details_updated':details_updated})
 
 
 
@@ -165,7 +180,8 @@ def create_car(request):
             # form.save()
 
         data = Car.objects.all()
-        return render(request, 'car_rental/services/dashboard.html')
+        msg="Your car added Successfully"
+        return render(request, 'car_rental/services/dashboard.html',{'msg':msg})
 
 
     else:
@@ -280,9 +296,9 @@ def bookRentalCar(request):
                     reservation.image = car.photo.url
                     reservation.total = float(reservation.taxes) + float(25) + (
                             float(car.daily_rate) * float(num_days))
-
+                msg="Your reservation details updated successfully"
                 return render(request, 'car_rental/services/rentSuccess.html',
-                              {'reservations': reservations})
+                              {'reservations': reservations,'msg':msg})
 
 
                 # Save the object to update it in the database
@@ -532,9 +548,9 @@ def license_detail_view(request,car_id,car_type):
                 reservation.taxes = taxes
 
                 reservation.total = float(reservation.taxes) + float(25) + (float(car.daily_rate) * float(num_days))
-
+            msg="Your car reservation is successfull"
             return render(request, 'car_rental/services/rentSuccess.html',
-                          {"id": customer.pk, 'reservations': reservations})
+                          {"id": customer.pk, 'reservations': reservations,'msg':msg})
        except LicenseDetail.DoesNotExist:
 
            form = LicenseDetailForm()

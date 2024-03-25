@@ -12,6 +12,7 @@ class Customuser(models.Model):
     address = models.CharField(max_length=100, null=False)
     city = models.CharField(max_length=100, null=False)
     state = models.CharField(max_length=100, null=False)
+    photo = models.ImageField(upload_to='car_photos/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.username} - {self.email}"
