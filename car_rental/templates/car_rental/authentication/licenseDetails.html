@@ -190,43 +190,58 @@
         return `${year}-${month}-${day}`;
     }
 
-    // Get the input element
-    const expiry_date = document.getElementById('expiry_date');
-    const issue_date = document.getElementById('issue_date');
-    const birth_date = document.getElementById('birth_date');
+    // Function to calculate age based on birth date
+    function calculateAge(birthDate) {
+        const today = new Date();
+        const birthDateObj = new Date(birthDate);
+        let age = today.getFullYear() - birthDateObj.getFullYear();
+        const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
-    // Listen for changes to the input value
-    expiry_date.addEventListener('change', function() {
-        // Parse the input value as a Date object
-        const selectedDate = new Date(this.value);
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+            age--;
+        }
 
-        // Format the date as YYYY-MM-DD
-        const formattedDate = formatDate(selectedDate);
+        return age;
+    }
 
-        // Update the input value with the formatted date
-        this.value = formattedDate;
-    });
+    // Get the form element
+    const form = document.querySelector('form');
 
-    issue_date.addEventListener('change', function() {
-        // Parse the input value as a Date object
-        const selectedDate = new Date(this.value);
+    // Listen for form submission
+    form.addEventListener('submit', function(event) {
+        // Prevent the default form submission
+        event.preventDefault();
 
-        // Format the date as YYYY-MM-DD
-        const formattedDate = formatDate(selectedDate);
+        // Get the input values
+        const issuingCountry = document.querySelector('select[name="issuing_country"]').value;
+        const birthDate = document.querySelector('input[name="birth_date"]').value;
+        const drivingLicenseNumber = document.querySelector('input[name="driving_license_number"]').value;
+        const issueDate = document.querySelector('input[name="issue_date"]').value;
+        const expiryDate = document.querySelector('input[name="expiry_date"]').value;
 
-        // Update the input value with the formatted date
-        this.value = formattedDate;
-    });
+        // Validate birth date
+        const age = calculateAge(birthDate);
+        if (age < 18) {
+            alert("You must be at least 18 years old to book a car.");
+            return;
+        }
 
-    birth_date.addEventListener('change', function() {
-        // Parse the input value as a Date object
-        const selectedDate = new Date(this.value);
 
-        // Format the date as YYYY-MM-DD
-        const formattedDate = formatDate(selectedDate);
+        // Validate issue date not in the future
+        const currentDate = formatDate(new Date());
+        if (issueDate > currentDate) {
+            alert("Issue date cannot be in the future.");
+            return;
+        }
 
-        // Update the input value with the formatted date
-        this.value = formattedDate;
+        // Validate expiry date not before today
+        if (expiryDate < currentDate) {
+            alert("You cannot book a car as your license is expired.");
+            return;
+        }
+
+        // If all validations pass, submit the form
+        form.submit();
     });
 </script>
 

@@ -10,12 +10,22 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Sign up Form </title>
     <link rel="stylesheet" type="text/css" href="{% static 'PATH/css/registration.css' %}">
+    <style>
+    /* Define custom styling for the anchor tag */
+    .header a {
+        text-decoration: none; /* Remove underline */
+        color: inherit; /* Inherit color from parent */
+        /* Add any other custom styling here */
+    }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <img src="{% static 'PATH/images/logo.png' %}" alt="Logo" class="logo"> <!-- Path to your logo image -->
+            <a href="{% url 'PATH:homepage' %}"> <!-- Replace 'your-redirect-url' with the URL you want to redirect to -->
+                <img src="{% static 'PATH/images/logo.png' %}" alt="Logo" class="logo"> <!-- Path to your logo image -->
+            </a>
         </div>
         <div class="content">
             <div class="side-image">

@@ -13,27 +13,115 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
     <!-- Bootstrap JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+    /* Define custom styling for the anchor tag */
+    .header a {
+        text-decoration: none; /* Remove underline */
+        color: inherit; /* Inherit color from parent */
+        /* Add any other custom styling here */
+    }
+</style>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const links = document.querySelectorAll(".navbar-menu li a");
+
+      links.forEach((link) => {
+        link.addEventListener("click", function (event) {
+          links.forEach((link) => link.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginBtn = document.querySelector(".login-btn");
+      const signupBtn = document.querySelector(".signup-btn");
+
+      loginBtn.addEventListener("click", function () {
+        loginBtn.classList.add("active");
+        signupBtn.classList.remove("active");
+      });
+
+      signupBtn.addEventListener("click", function () {
+        signupBtn.classList.add("active");
+        loginBtn.classList.remove("active");
+      });
+    });
+
+// our clientFeedbackRight();
+
+    document.addEventListener('DOMContentLoaded', function() {
+  const prevButton = document.getElementById('prevButton');
+  const nextButton = document.getElementById('nextButton');
+  const clientFeedbackRight = document.getElementById('clientFeedbackRight');
+
+  let currentSlide = 0;
+  const slides = clientFeedbackRight.querySelectorAll('.client-box');
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.style.display = i === index ? 'flex' : 'none';
+    });
+  }
+
+  function nextSlide() {
+    slides[currentSlide].style.display = 'none'; // Hide current slide
+    currentSlide = (currentSlide + 1) % slides.length; // Move to next slide
+    slides[currentSlide].style.display = 'flex'; // Show next slide
+
+    // If it's the last slide, hide the first one
+    if (currentSlide === slides.length - 1) {
+      slides[0].style.display = 'none';
+    }
+  }
+
+  function prevSlide() {
+    slides[currentSlide].style.display = 'none'; // Hide current slide
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length; // Move to previous slide
+    slides[currentSlide].style.display = 'flex'; // Show previous slide
+
+    // If it's the first slide, hide the last one
+    if (currentSlide === 0) {
+      slides[slides.length - 1].style.display = 'none';
+    }
+  }
+
+  prevButton.addEventListener('click', prevSlide);
+  nextButton.addEventListener('click', nextSlide);
+
+  // Initially show the first slide
+  showSlide(currentSlide);
+});
+
+
+
+  </script>
 </head>
 
 <body>
 
     <div class="container">
         <div class="header">
-            <img src="{% static 'PATH/images/logo.png' %}" alt="Logo" class="logo"> <!-- Path to your logo image -->
+            <a href="{% url 'PATH:homepage' %}"> <!-- Replace 'your-redirect-url' with the URL you want to redirect to -->
+                <img src="{% static 'PATH/images/logo.png' %}" alt="Logo" class="logo"> <!-- Path to your logo image -->
+            </a>
         </div>
         <div class="content">
             <div class="side-image">
                 <img src="{% static 'car_rental/images/Frame.png' %}" alt="Side Image"> <!-- Path to your side image -->
             </div>
-            <div class="login-form">
-                 {% block content %}{% endblock %}
+        <div class="login-form">
+             {% block content %}{% endblock %}
 
-            </div>
+        </div>
         </div>
     </div>
     </div>
+
 </body>
 
+
 </html>
+
