@@ -112,7 +112,7 @@
             <ul class="messages">
                     <div class="message-content">
 
-                    <form method="POST" class="custom-form">
+                    <form method="POST" enctype="multipart/form-data" class="custom-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>

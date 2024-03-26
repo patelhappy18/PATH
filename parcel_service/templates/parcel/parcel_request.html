@@ -99,7 +99,9 @@
                         </form>
                     </div>
                         <div>
-                            <img src="https://res.cloudinary.com/demo/image/upload/w_400/sample.jpg" height="230" width="360">
+{#                            <img src="https://res.cloudinary.com/demo/image/upload/w_400/sample.jpg" height="230" width="360">#}
+{#                            <img src="../../../media/{{ request.image }}" height="230" width="360">#}
+                            <img src="/media/{{ request.image }}" height="230" width="360">
                         </div>
                     </div>
                 </li>
