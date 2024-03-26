@@ -112,6 +112,21 @@
     background-color: #f0f0f0;
   }
 
+    .success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.success-message i {
+    margin-right: 5px;
+    color: #155724;
+}
   </style>
 </head>
 <header>
@@ -169,8 +184,13 @@
 
   <div style="margin-top: 140px" class="car-reserve" >
       {% for details in reservations %}
-{#        <form action="" method="POST">#}
+
             <div class="container" >
+                {% if msg %}
+                   <div class="success-message">
+                        <i class="fas fa-check-circle"></i>{{ msg }}
+                    </div>
+                {% endif %}
               <img src="{{ details.image }}" alt="Reserved Car" class="car-image">
               <div class="header">
                 <h2>{{ details.car_id }}</h2>
@@ -192,6 +212,18 @@
                   <span>Rental End Date</span>
                   <span>{{ details.rental_end_date }}</span>
                 </div>
+                  <div class="item">
+                  <span>Pickup Location</span>
+                  <span>{{ details.pickup_location }}</span>
+                </div>
+                  <div class="item">
+                  <span>Pickup Time</span>
+                  <span>{{ details.pickup_time }}</span>
+                </div>
+                   <div class="item">
+                  <span>Return Time</span>
+                  <span>{{ details.return_time }}</span>
+                </div>
                 <div class="item">
                   <span>Insurance Add on</span>
                   <span>${{ details.insurance }}.00</span>
@@ -206,9 +238,9 @@
                   <span>${{ details.total }}.00</span>
                 </div>
               </div>
-              <a href="http://localhost:8000/car_rental/editMyReservation/{{ details.unique_id }}"><button class="edit-btn">Edit Booking</button></a>
+              <a href="http://localhost:8000/car_rental/editMyReservation/{{ details.unique_id }}" onclick="return confirmEdit()"><button  class="edit-btn">Edit Booking</button></a>
 {#                <button type="submit" class="edit-btn">Edit Booking</button><br>#}
-               <a href="http://localhost:8000/car_rental/deleteReservation/{{ details.unique_id }}"><button class="delete-btn">Delete Booking</button></a>
+               <a href="http://localhost:8000/car_rental/deleteReservation/{{ details.unique_id }}" onclick="return confirmDelete()"><button class="delete-btn">Delete Booking</button></a>
              </div>
 {#          </form>#}
          {% endfor %}
@@ -224,4 +256,28 @@
     </section>
 
 </body>
+<script>
+        function confirmDelete() {
+            var result = confirm("Are you sure you want to delete?");
+
+            if (result) {
+            } else {
+                alert("Deletion cancelled.");
+                return false; // Prevent the anchor's default action
+
+            }
+        }
+        function confirmEdit() {
+            var result = confirm("Are you sure you want to Edit?");
+
+            if (result) {
+            } else {
+                alert("Deletion cancelled.");
+                return false; // Prevent the anchor's default action
+
+            }
+        }
+
+
+    </script>
 </html>
