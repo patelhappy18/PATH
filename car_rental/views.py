@@ -23,6 +23,7 @@ from django.urls import reverse_lazy
 
 
 def showUserDashboard(request):
+
     return render(request, 'car_rental/services/userDashboard.html')
 
 def deleteReservation(request, reservationId):
@@ -49,7 +50,8 @@ def editMyReservation(request, reservationId):
     reservation.return_time=formatted_return_time
     reservation.rental_end_date = formatted_end_date
     reservation.rental_start_date = formatted_start_date
-    return render(request, "car_rental/services/dashboard.html", {"edit_reservation": reservation})
+    data = Car.objects.all()
+    return render(request, "car_rental/services/dashboard.html", {"edit_reservation": reservation,"cars":data})
 
 
 def myProfile(request):
@@ -181,7 +183,8 @@ def create_car(request):
 
         data = Car.objects.all()
         msg="Your car added Successfully"
-        return render(request, 'car_rental/services/dashboard.html',{'msg':msg})
+        data = Car.objects.all()
+        return render(request, 'car_rental/services/dashboard.html',{'msg':msg,'cars':data})
 
 
     else:
@@ -238,6 +241,7 @@ def homepage(request):
 
         # Filter cars based on the submitted form data
         filtered_cars = Car.objects.filter(seats=seats, car_type=car_type, fuel_type=fuel_type)
+
         return render(request, "car_rental/services/dashboard.html", {"cars": filtered_cars})
     else:
         # If no filter criteria submitted, display all cars
@@ -406,7 +410,8 @@ def loginView(request):
         user = authenticate_user(email, password)
         if user is not None:
             request.session['user_id'] = user
-            return render(request, "car_rental/services/dashboard.html",{'id':request.session['user_id']})
+            data = Car.objects.all()
+            return render(request, "car_rental/services/dashboard.html",{'id':request.session['user_id'],'cars':data})
 
         else:
             form = LoginForm()
@@ -489,8 +494,8 @@ def license_detail_view(request,car_id,car_type):
 
     if request.session.get('pickup_time') is None:
         # request.session['user_id'] = user
-
-        return render(request, "car_rental/services/dashboard.html",{'car_id_selected':car_id,'car_type':request.session.get('car_type')})
+        data = Car.objects.all()
+        return render(request, "car_rental/services/dashboard.html",{'car_id_selected':car_id,'car_type':request.session.get('car_type'),'cars':data})
 
     if request.method == 'GET':
 

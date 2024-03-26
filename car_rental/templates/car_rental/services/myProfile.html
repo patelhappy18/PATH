@@ -197,7 +197,7 @@
             <div class="p-6">
                 <label class="block text-sm font-medium leading-none mb-2">Your Profile photo ( Optional )</label>
 
-                {% if current_userDetails.photo.url %}
+                {% if current_userDetails.photo %}
                     <div class="border border-gray-300 rounded-lg p-4 bg-gray-100 flex justify-center items-center">
                     <img id="carImage" src="{{ current_userDetails.photo.url }}" alt="Car" class="max-w-full max-h-64 object-contain">
                     </div>

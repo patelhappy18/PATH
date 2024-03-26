@@ -180,7 +180,6 @@
             </div>
           </nav>
 
-
 </header>
 
 <body>
@@ -222,12 +221,12 @@
 
       <div style="margin-top: 100px;  gap: 20px; display: flex; justify-content: space-between; flex-direction: row; text-align: center;" class="" >
             <div class="container" style="height: 350px;"  >
-              <img width="200px" height="240px" src="../../static/PATH/images/find_ride.jpg" alt="Reserved Car" class="car-image">
+             <iframe src="https://lottie.host/embed/1752f85d-3468-41cb-8913-ea36f69c1240/n59ZlpGRZo.json" style="border: none; width: 50%; height: 50%;"></iframe>
                <h1>Finding a car for rent ?</h1>
                 <a href="{% url 'dashboard' %}"><button class="signup-btn">Book Rental</button></a>
              </div>
             <div class="container" style="height: 350px;"  >
-              <img width="200px" height="240px" src="../../static/PATH/images/post_car.jpg" alt="Reserved Car" class="car-image">
+              <iframe src="https://lottie.host/embed/31582624-2188-4b0e-b436-9af1b8d6e439/rkJaW7mEvX.json" style="border: none; width: 50%; height: 50%;"></iframe>
                 <h1>Post your car for rent ?</h1>
                 <a href="{% url 'addMyCar' %}"><button class="signup-btn">Post Rental</button></a>
              </div>
@@ -344,7 +343,7 @@
 
         </div>
         <div class="contact-image">
-          <img src="images/handkey.jpg" alt="">
+          <img src="{% static 'PATH/images/handkey.jpg' %}" alt="">
         </div>
       </div>
     </div>
