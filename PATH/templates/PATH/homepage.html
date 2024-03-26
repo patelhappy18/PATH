@@ -101,7 +101,7 @@
                         <li><a href="rental/dashboard/">Rental car</a></li>
           {% endif %}
           <li><a href="{% url 'car_ride:home' %}">Rides</a></li>
-            <li><a href="#">Parcel service</a></li>
+            <li><a href="{% url 'parcel_service:homepage' %}">Parcel service</a></li>
         </ul>
         <div class="navbar-buttons">
             {% if request.user.username %}

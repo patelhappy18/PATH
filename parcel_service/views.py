@@ -1,3 +1,4 @@
+from django.dispatch import receiver
 from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Parcel, createParcelRide
@@ -7,7 +8,7 @@ from django.http import JsonResponse
 from car_ride.models import Mycar
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Parcel, createParcelRide
+from .models import Parcel, createParcelRide, UserActivity
 from .forms import ParcelForm, CreateParcelRideForm, RideSearchForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -15,9 +16,9 @@ from django.contrib.auth.decorators import login_required
 
 
 
-def homepage(request):
-    # return render(request, 'parcel/homepage.html')
-    return render(request, 'homepage.html')
+# def homepage(request):
+#     # return render(request, 'parcel/homepage.html')
+#     return render(request, 'homepage.html')
 def parcel_list(request):
     parcels = Parcel.objects.all()
     return render(request, 'parcel/parcel_list.html', {'parcels': parcels})
@@ -40,6 +41,7 @@ def create_parcel(request, ride_id):
             parcel.source_city = form.cleaned_data['source_city']
             parcel.destination_city = form.cleaned_data['destination_city']
             parcel.save()
+            UserActivity.objects.create(reqstr=request.user,recvr=ride.cust.usern, type="Requested",  msg=f'Created parcel request for {parcel.receiver} for ride {ride_id}')
             return HttpResponse('Your parcel registration is saved.')
     else:
         form = ParcelForm()
@@ -123,7 +125,7 @@ def submit_parcel_request(request, ride_id):
             parcel_request.requester = request.user
             parcel_request.receiver = Mycar.objects.get(id=ride_id).cust.user
             parcel_request.save()
-            return HttpResponse("Passed for request")
+            return redirect('parcel_service:dashboard_enduser')
     else:
         form_1 = ParcelForm()
 
@@ -145,6 +147,7 @@ def get_ride_details(request, ride_id):
             'kilograms': ride.kilograms,
             'car_img': ride.car_img.url if ride.car_img else ''
         }
+        print(ride.car_img.url)
         return JsonResponse(data)
     except Mycar.DoesNotExist:
         return JsonResponse({'error': 'Ride not found'}, status=404)
@@ -174,6 +177,29 @@ def parcel_requests_view(request, ride_id):
         parcel_request.is_accepted = is_accepted
         parcel_request.save()
 
+        # Record the user activity
+        activity = f'{request.user.username} {is_accepted.lower()} parcel request of {parcel_request.requester} for {parcel_request.source_city} to {parcel_request.destination_city}.'
+        UserActivity.objects.create(reqstr=parcel_request.receiver,recvr=parcel_request.requester, type=is_accepted,  msg=f'{parcel_request.receiver} has {is_accepted} {parcel_request.requester} parcel request.')
+
         # Redirect to the same page after updating
         return redirect('parcel_service:parcel_request', ride_id=ride_id)
     return render(request, 'parcel/parcel_request.html', {'parcel_requests': parcel_requests})
+
+
+def user_activities_view(request):
+    user_activities = UserActivity.objects.filter(recvr=request.user).order_by('-timestamp')
+    return render(request, 'parcel/user_activities.html', {'user_activities': user_activities})
+
+def receiver_queries_view(request):
+    receiver = request.user.username  # Assuming the username is used as the receiver's identifier
+    print(receiver)
+    # queries = UserActivity.objects.filter(recvr=receiver)
+    queries = UserActivity.objects.filter(recvr=receiver, type__in=['Accepted', 'Declined'])
+
+    return render(request, 'parcel/end_user_acvities.html', {'queries': queries})
+
+
+def homepage(request):
+    if request.user.is_authenticated:
+        print("from dashboard", request.user)
+        return render(request, "parcel/homepage.html")
