@@ -1,19 +1,18 @@
-{#{% load static %}#}
 {#<!DOCTYPE html>#}
 {#<html lang="en">#}
 {#<head>#}
 {#    <meta charset="UTF-8">#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
-{#    <title>Create Parcel</title>#}
-{#    <link rel="stylesheet" href="{% static 'css/style.css' %}">#}
+{#    <title>Title</title>#}
 {#</head>#}
 {#<body>#}
-{#    <h1>Create Parcel</h1>#}
-{#    <form method="POST">#}
-{#        {% csrf_token %}#}
-{#        {{ form.as_p }}#}
-{#        <button type="submit">Submit</button>#}
-{#    </form>#}
+{#    <h1>Receiver Queries</h1>#}
+{#    <ul>#}
+{#        {% for query in queries %}#}
+{#            <li>{{ query.timestamp}} - {{query.msg}}</li>#}
+{#        {% empty %}#}
+{#            <li>No queries found.</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
 {#</body>#}
 {#</html>#}
 
@@ -91,12 +90,6 @@
         flex-direction: row;
         justify-content: space-between;
     }
-    .custom-form > p > label, .custom-form > p > input {
-        width: 100% ;
-    }
-     .custom-form > p > textarea  {
-        width: 100% ;
-    }
     </style>
 
 {#{% for query in queries %}#}
@@ -107,19 +100,26 @@
 
     <div class="container">
         <div class="section">
-            <h2 class="section-heading">Register Parcel</h2>
+            <h2 class="section-heading">Receiver Queries</h2>
 
             <ul class="messages">
-                    <div class="message-content">
+                {% for query in queries %}
+                <li class="message" onclick="showParcelRequests({{ ride.id }});">
 
-                    <form method="POST" enctype="multipart/form-data" class="custom-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+                    <div class="message-content">
+                        {{ query.timestamp}} - {{query.msg}}
+
                     </div>
                 </li>
+                {% empty %}
+                     <li class="message" onclick="showParcelRequests({{ ride.id }});">
 
+                    <div class="message-content">
+                        No queries found.
+
+                    </div>
+                </li>
+                {% endfor %}
             </ul>
         </div>
 

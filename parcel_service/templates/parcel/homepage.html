@@ -1,0 +1,116 @@
+{% extends 'parcel/base.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+        .dashboard-container {
+        margin-top: 3%;
+        margin-bottom: 3%;
+        padding: 50px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .dashboard-section {
+        width: calc(30% - 5px);
+        border: 2px solid #9961BA;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        background-color: rgba(153, 97, 186, 0.2);
+        cursor: pointer;
+    }
+
+    .dashboard-section:hover {
+        transform: translateY(-5px);
+    }
+
+    .dashboard-section-content {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .dashboard-section h5 {
+        font-size: 25px;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .dashboard-section a {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #32213B;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-size: 20px;
+    }
+
+
+    .dashboard-section img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+        .dashboard-section i {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="dashboard-section">
+        <div class="dashboard-section-content">
+            <h5>For Parcel Rider</h5>
+            <img src="{% static 'images/driver.png' %}" alt="For Drivers">
+            <br>
+            <i class="fa fa-car"></i>
+            <a href="{% url 'parcel_service:user_activities' %}" style="margin-right: 15%">
+                 My Activities
+            </a>
+{#            <br>#}
+{#            <i class="fa fa-users"></i>#}
+{#            <a href="{% url 'car_ride:customerbookings' %}">#}
+{#                 Dashboard#}
+{#            </a>#}
+            <br>
+            <i class="fa fa-road"></i>
+            <a href="{% url 'parcel_service:dashboard' %}" style="margin-right: 16%">
+                 Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="dashboard-section">
+        <div class="dashboard-section-content">
+            <h5>For End Users</h5>
+            <img src="{% static 'images/passenger.png' %}" alt="For Passengers" style="width: 45%">
+            <br>
+            <i class="fa fa-search"></i>
+            <a href="{% url 'parcel_service:receiver_queries' %}">
+                 Parcel Registration Confirmation
+            </a>
+            <br>
+            <i class="fa fa-list"></i>
+            <a href="{% url 'parcel_service:dashboard_enduser' %}">
+                 Show Me Available Parcel Rides
+            </a>
+        </div>
+    </div>
+
+{#    <div class="dashboard-section">#}
+{#        <div class="dashboard-section-content">#}
+{#            <h5>Account Details</h5>#}
+{#            <img src="{% static 'images/account.png' %}" alt="Account Details" style="height: 100%; width: 60%">#}
+{#            <br>#}
+{#            <i class="fa fa-user"></i>#}
+{#            <a href="{% url 'car_ride:myaccount' %}">#}
+{#                 My Account#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+</div>
+{%endblock%}
