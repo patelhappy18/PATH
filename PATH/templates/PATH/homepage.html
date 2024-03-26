@@ -122,11 +122,11 @@
           Enjoy your life with our comfortable cars.
         </h1>
         <p class="inner-paragraph">
-          Carent, is ready to serve the best experience in car rental.
+          PATH, is ready to serve the best experience in car rental.
         </p>
       </div>
 
-      <button class="inner-button">Button</button>
+      <a href="{% url 'dashboard' %}"><button class="inner-button">Our Services</button></a>
     </div>
   </div>
 
@@ -199,10 +199,10 @@
 
           </div>
           <div class="input-group2">
-            <input type="time" placeholder="Pickup Time">
+            <input type="time" id="pickupDate" placeholder="Pickup Time">
           </div>
           <div class="input-group2">
-            <input type="time" placeholder="Return Time">
+            <input type="time" id="returnDate" placeholder="Return Time">
 
           </div>
           <button class="book-now">Book Now</button>
@@ -262,7 +262,7 @@
                 <hr />
               </h2>
             </div>
-            <p class="section-paragraph">Carent is a reputable car rental company that offers a wide range of useful
+            <p class="section-paragraph">PATH is a reputable car rental company that offers a wide range of useful
               services for every taste.</p>
           </div>
           <div class="service-box-container">
@@ -314,7 +314,7 @@
             </div>
             <div class="client-details">
               <h3 class="client-name">Robert Fox</h3>
-              <p class="client-comment">During my last trip, I used a Carent sport car . The car was completely clean
+              <p class="client-comment">During my last trip, I used a PATH sport car . The car was completely clean
                 and had enough gas.</p>
             </div>
           </div>
@@ -353,13 +353,14 @@
       </h2>
       <div class=" contact-width">
         <div class="contact-container">
+        <form class="contactus" action="" method="post" >
+            {% csrf_token %}
+          <input type="text" name="name" placeholder="Your Name">
+          <input type="email" name="email" placeholder="Your Email">
+          <input type="text"  name="msg" placeholder="Your Message">
 
-          <input type="text" placeholder="Your Name">
-          <input type="email" placeholder="Your Email">
-          <input type="text" placeholder="Your Message">
-
-          <button class="send-message">Send A Message</button>
-
+          <button type="submit" class="send-message">Send A Message</button>
+        </form>
         </div>
         <div class="contact-image">
           <img src="../../static/PATH/images/handkey.jpg" alt="">
@@ -367,6 +368,7 @@
       </div>
     </div>
   </section>
+
 </body>
 
 </html>

@@ -10,12 +10,22 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Sign up Form </title>
     <link rel="stylesheet" type="text/css" href="{% static 'PATH/css/registration.css' %}">
+    <style>
+    /* Define custom styling for the anchor tag */
+    .header a {
+        text-decoration: none; /* Remove underline */
+        color: inherit; /* Inherit color from parent */
+        /* Add any other custom styling here */
+    }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <img src="{% static 'PATH/images/logo.png' %}" alt="Logo" class="logo"> <!-- Path to your logo image -->
+            <a href="{% url 'PATH:homepage' %}"> <!-- Replace 'your-redirect-url' with the URL you want to redirect to -->
+                <img src="{% static 'PATH/images/logo.png' %}" alt="Logo" class="logo"> <!-- Path to your logo image -->
+            </a>
         </div>
         <div class="content">
             <div class="side-image">
@@ -27,6 +37,9 @@
                     {% csrf_token %}
                     <div style="padding: 0 0 50px 0;">
                         <h2>Sign up</h2>
+                        <span class="error-message" id="passwordError" style="display: none;"></span>
+                        <span class="error-message" id="mobileError" style="display: none;"></span>
+                        <span class="error-message" id="emailError" style="display: none;"></span>
                         <p>Alrady register? <a href="{% url 'PATH:login' %}" style="color: white;"> Login here </a></p>
 
                     </div>
@@ -51,7 +64,8 @@
                                 <i class="fa-solid fa-eye-slash"></i>
                                 </label>
                             </div>
-                            <input type="password" id="password" name="password" placeholder="Password" required>
+                             <input type="password" id="password" name="password" placeholder="Password" required>
+                            <span class="error-message" id="passwordError" style="display: none;"></span>
                         </div>
                         <!-- <div class="input-box">
                             <div class="form-flex">
@@ -71,7 +85,8 @@
                             <div class="form-flex">
                                 <label style="font-size: 16px;" class="label" for="mobile">Phone Number</label>
                             </div>
-                            <input type="text" id="mobile" name="mobile" placeholder="Phone Number" required>
+                             <input type="text" id="mobile" name="mobile" placeholder="Phone Number" required>
+                            <span class="error-message" id="mobileError" style="display: none;"></span>
 
                         </div>
 
@@ -127,21 +142,6 @@
                             </div>
                         </div>
 
-                        <div>
-                            <div style="margin-bottom: 30px;">
-
-                                <div class="form-flex">
-                                    <div class="check">
-                                        <input type="checkbox" id="checkbox1" class="checkbox-input">
-                                        <label for="checkbox1" class="checkbox-label">Remember me ?</label>
-                                    </div>
-                                    <a class="forg" href="">Forget password?</a>
-                                </div>
-                            </div>
-                        </div>
-
-
-
                         <button type="submit">Sign up</button>
                     </div>
                 </form>
@@ -166,4 +166,7 @@
                 this.querySelector('i').classList.toggle('fa-eye-slash');
             });
         });
+
+
+
 </script>

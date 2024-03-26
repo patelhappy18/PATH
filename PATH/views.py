@@ -108,3 +108,4 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 def logoutView(request):
     logout(request)
     return redirect('PATH:homepage')
+

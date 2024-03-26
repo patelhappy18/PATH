@@ -14,35 +14,95 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9; /* Light gray background */
+        }
+
+        .colorss {
+            background-color: #ffffff; /* White background */
+            padding: 40px; /* Add padding for spacing */
+            border-radius: 10px; /* Add border radius for rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+        }
+
+        .colorss h1 {
+            text-align: center;
+            color: #9961ba;
+            font-weight: bold;
+            margin-bottom: 20px; /* Add margin bottom for spacing */
+        }
+
+        .colorss label {
+            font-weight: bold;
+            color: #9961ba;
+            margin-bottom: 8px; /* Add margin bottom for spacing */
+        }
+
+        .colorss select,
+        .colorss input[type="text"],
+        .colorss input[type="date"] {
+            width: 100%;
+            padding: 12px; /* Increase padding for better visibility */
+            margin: 8px 0;
+            border: 1px solid #ccc; /* Light gray border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px; /* Increase font size for better readability */
+            background-image: linear-gradient(#f2f2f2, #f2f2f2), repeating-linear-gradient(45deg, transparent, transparent 10px, #9961ba 10px, #9961ba 20px); /* Add pattern */
+        }
+
+        .colorss input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .colorss .input-group1 {
+            margin-bottom: 20px; /* Add margin bottom for spacing */
+        }
+
+        .colorss button[type="submit"] {
+            background-color: #9961ba;
+            color: #ffffff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s; /* Add transition for smooth hover effect */
+        }
+
+        .colorss button[type="submit"]:hover {
+            background-color: #7e3f9d; /* Darker shade of purple on hover */
+        }
+    </style>
 </head>
+
 <header>
-{#    <div class="background-image">#}
-           <nav class="navbar">
-      <div class="containers">
-        <div class="navbar-logo">
-          <img src="{% static 'car_rental/images/logo.png' %}" alt="Logo" class="logo">
+    <nav class="navbar">
+        <div class="containers">
+            <div class="navbar-logo">
+                <img src="{% static 'car_rental/images/logo.png' %}" alt="Logo" class="logo">
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="{% url 'PATH:homepage' %}" >Home</a></li>
+                <li><a href="#" class="active">Rental car</a></li>
+                <li><a href="{% url 'car_ride:home' %}">Rides</a></li>
+                <li><a href="http://localhost:8000/parcel_service/homepage/">Parcel service</a></li>
+            </ul>
+            <div class="navbar-buttons">
+                {% if request.user.username %}
+                    <h1 style="color: white;">Welcome, {{ request.user.username }}!</h1>
+                    <a href="{% url 'PATH:logout' %}"><button class="signup-btn">Log Out</button></a>
+                {% else %}
+                    <a href="{% url 'PATH:register' %}"><button class="signup-btn">Sign Up</button></a>
+                    <a href="{% url 'PATH:login' %}"> <button class="login-btn active">Login</button></a>
+                {% endif %}
+            </div>
         </div>
-        <ul class="navbar-menu">
-          <li><a href="{% url 'PATH:homepage' %}" >Home</a></li>
-
-          <li><a href="#" class="active">Rental car</a></li>
-          <li><a href="{% url 'car_ride:home' %}">Rides</a></li>
-            <li><a href="http://localhost:8000/parcel_service/homepage/">Parcel service</a></li>
-        </ul>
-        <div class="navbar-buttons">
-            {% if request.user.username %}
-                <h1 style="color: white;">Welcome, {{ request.user.username }}!</h1>
-                <a href="{% url 'PATH:logout' %}"><button class="signup-btn">Log Out</button></a>
-            {% else %}
-            <a href="{% url 'PATH:register' %}"><button class="signup-btn">Sign Up</button></a>
-            <a href="{% url 'PATH:login' %}"> <button class="login-btn active">Login</button></a>
-            {% endif %}
-        </div>
-      </div>
     </nav>
-<br><br><br><br><br><br>
-{#    </div>#}
-
+    <br><br><br><br><br><br>
 </header>
 
 <body>
@@ -51,89 +111,73 @@
             <div style="width: 1000px; margin: 40px auto; ">
                 <form method="POST" action="http://localhost:8000/car_rental/addLicenseDetails/{{ car_id }}/{{ car_type }}">
                     {% csrf_token %}
+                    <h1 style="text-align: center; color: #9961ba; font-weight: bold;">Enter your License Details</h1>
+
                     <div>
+                        <div>
                             <div>
                                 <div>
-                                    <div>
-                                        <label for=""><b> Issuing Country*</b> </label>
-                                        <!-- <input class="width977input" type="text" id="countryInput" placeholder="Enter your country of residence"> -->
-                                        <select name="issuing_country" style="width: 1000px;" class="width977input" id="countrySelect">
-                                            <option value="" disabled selected>Select your Issuing Country</option>
-                                            <option value="Canada">Canada</option>
-                                            <option value="USA">USA</option>
-                                        </select>
-
-                                    </div>
-                                 <div>
+                                    <label for=""><b> Issuing Country*</b> </label>
+                                    <select name="issuing_country" style="width: 1000px;" class="width977input" id="countrySelect">
+                                        <option value="" disabled selected>Select your Issuing Country</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="USA">USA</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label for=""> <b> Issuing Authority </b></label> <br />
-                                        <input name="issuing_authority" style="width: 524px;" class="width977input" type="text"
-                                            id="firstNameInput"/>
-                                 </div>
-
-                                    <div style="gap: 20px; margin: 0 0 20px 0;">
-                                        <label for=""><b> Birth Date
-                                            </b> (YYYY/MM/DD)*</label>
-                                        <div class="input-group1">
-                                                <input id="birth_date" name="birth_date" type="date" placeholder="Pickup Date">
-                                            </div>
-                                    </div>
-
-                                    <div>
-                                        <label for=""> <b> Driver's Licence Number* </b></label> <br />
-                                        <input name="driving_license_number" style="width: 524px;" class="width977input" type="text"
-                                            id="firstNameInput" />
-                                    </div>
-
-
-                                        <div style="margin:  0 0 20px 0;">
-                                            <p style="margin: 0;">Please provide driver's license expiration date or
-                                                issuing date.</p>
-                                            <div class="input-group1">
-                                                <input id="issue_date" name="issue_date" type="date" placeholder="Pickup Date">
-                                            </div>
-                                        </div>
-
-                                        <div style="gap: 20px; margin: 0 0 20px 0;">
-                                            <label for=""><b> Expiry Date
-                                                </b> (YYYY/MM/DD)*</label>
-                                            <div class="input-group1">
-                                                <input id="expiry_date" name="expiry_date" type="date" placeholder="Pickup Date">
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <h1><b>E-mail Specials (Optional)</b></h1>
-                                            <div>
-                                                <input style="padding: 10px;" type="checkbox" id="subscribeCheckbox">
-                                                Sign up for PATH E-mail Specials
-                                            </div>
-                                            <div>
-                                                <p>
-                                                    By selecting this box, you would like to receive email promotions and offers from PATH Rent-A-Car. Note that your email interactions can be used to perform analytics and produce content and ads tailored to your interest. Some of these offers will be received in advertising on non-PATH sites, including on social media and digital advertising platforms. Please understand that there is no charge and that you can unsubscribe at any time by (i) using the links provided in the emails, (ii) managing your preferences in your PATH Plus (Emerald Club) profile or (iii) contacting us. Please consult our Privacy Policy and our Cookie Policy to find out more.
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <input style="padding: 10px;" type="checkbox" id="subscribeCheckbox">
-
-I have read and accept PATH Plus Terms & Conditions *
-                                            </div>
-                                        </div>
-
-                                        <div style="margin: 20px 0; text-align: center" class="see-all-btn" style="text-align: center;">
-                                            <button type="submit">Submit</button>
-                                        </div>
-
+                                    <input name="issuing_authority" style="width: 524px;" class="width977input" type="text"
+                                        id="firstNameInput"/>
+                                </div>
+                                <div style="gap: 20px; margin: 0 0 20px 0;">
+                                    <label for=""><b> Birth Date</b> (YYYY/MM/DD)*</label>
+                                    <div class="input-group1">
+                                        <input id="birth_date" name="birth_date" type="date" placeholder="Brith Date">
                                     </div>
                                 </div>
-
-
-
+                                <div>
+                                    <label for=""> <b> Driver's Licence Number* </b></label> <br />
+                                    <input name="driving_license_number" style="width: 524px;" class="width977input" type="text"
+                                        id="firstNameInput" />
+                                </div>
+                                <div style="margin:  0 0 20px 0;">
+                                    <p style="margin: 0; font-weight: bold; color: #9961ba;">Please provide driver's license expiration date or issuing date.</p>
+                                    <div class="input-group1">
+                                        <input id="issue_date" name="issue_date" type="date" placeholder="Issue Date">
+                                    </div>
+                                </div>
+                                <div style="gap: 20px; margin: 0 0 20px 0;">
+                                    <label for=""><b> Expiry Date</b> (YYYY/MM/DD)*</label>
+                                    <div class="input-group1">
+                                        <input id="expiry_date" name="expiry_date" type="date" placeholder="Expiry Date">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h1><b>E-mail Specials (Optional)</b></h1>
+                                    <div>
+                                        <input style="padding: 10px;" type="checkbox" id="subscribeCheckbox">
+                                        Sign up for PATH E-mail Specials
+                                    </div>
+                                    <div>
+                                        <p>By selecting this box, you would like to receive email promotions and offers from PATH Rent-A-Car. Note that your email interactions can be used to perform analytics and produce content and ads tailored to your interest. Some of these offers will be received in advertising on non-PATH sites, including on social media and digital advertising platforms. Please understand that there is no charge and that you can unsubscribe at any time by (i) using the links provided in the emails, (ii) managing your preferences in your PATH Plus (Emerald Club) profile or (iii) contacting us. Please consult our Privacy Policy and our Cookie Policy to find out more.</p>
+                                    </div>
+                                    <div>
+                                        <input style="padding: 10px;" type="checkbox" id="subscribeCheckbox">
+                                        I have read and accept PATH Plus Terms & Conditions *
+                                    </div>
+                                </div>
+                                <div style="margin: 20px 0; text-align: center" class="see-all-btn">
+                                    <button type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
-
             </div>
         </div>
     </section>
 </body>
+
 <script>
     // Function to format date as YYYY-MM-DD
     function formatDate(date) {
@@ -146,44 +190,60 @@ I have read and accept PATH Plus Terms & Conditions *
         return `${year}-${month}-${day}`;
     }
 
-    // Get the input element
-    const expiry_date = document.getElementById('expiry_date');
-    const issue_date = document.getElementById('issue_date');
-    const birth_date = document.getElementById('birth_date');
+    // Function to calculate age based on birth date
+    function calculateAge(birthDate) {
+        const today = new Date();
+        const birthDateObj = new Date(birthDate);
+        let age = today.getFullYear() - birthDateObj.getFullYear();
+        const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
-    // Listen for changes to the input value
-    expiry_date.addEventListener('change', function() {
-        // Parse the input value as a Date object
-        const selectedDate = new Date(this.value);
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+            age--;
+        }
 
-        // Format the date as YYYY-MM-DD
-        const formattedDate = formatDate(selectedDate);
+        return age;
+    }
 
-        // Update the input value with the formatted date
-        this.value = formattedDate;
-    });
+    // Get the form element
+    const form = document.querySelector('form');
 
-        issue_date.addEventListener('change', function() {
-        // Parse the input value as a Date object
-        const selectedDate = new Date(this.value);
+    // Listen for form submission
+    form.addEventListener('submit', function(event) {
+        // Prevent the default form submission
+        event.preventDefault();
 
-        // Format the date as YYYY-MM-DD
-        const formattedDate = formatDate(selectedDate);
+        // Get the input values
+        const issuingCountry = document.querySelector('select[name="issuing_country"]').value;
+        const birthDate = document.querySelector('input[name="birth_date"]').value;
+        const drivingLicenseNumber = document.querySelector('input[name="driving_license_number"]').value;
+        const issueDate = document.querySelector('input[name="issue_date"]').value;
+        const expiryDate = document.querySelector('input[name="expiry_date"]').value;
 
-        // Update the input value with the formatted date
-        this.value = formattedDate;
-    });
+        // Validate birth date
+        const age = calculateAge(birthDate);
+        if (age < 18) {
+            alert("You must be at least 18 years old to book a car.");
+            return;
+        }
 
-        birth_date.addEventListener('change', function() {
-        // Parse the input value as a Date object
-        const selectedDate = new Date(this.value);
 
-        // Format the date as YYYY-MM-DD
-        const formattedDate = formatDate(selectedDate);
+        // Validate issue date not in the future
+        const currentDate = formatDate(new Date());
+        if (issueDate > currentDate) {
+            alert("Issue date cannot be in the future.");
+            return;
+        }
 
-        // Update the input value with the formatted date
-        this.value = formattedDate;
+        // Validate expiry date not before today
+        if (expiryDate < currentDate) {
+            alert("You cannot book a car as your license is expired.");
+            return;
+        }
+
+        // If all validations pass, submit the form
+        form.submit();
     });
 </script>
 
 </html>
+
