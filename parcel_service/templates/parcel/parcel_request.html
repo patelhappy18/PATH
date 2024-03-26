@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Parcel Ride</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
+{% extends 'parcel/base.html' %}
+{% load static %}
+{% block body_block %}
+    <style>
+
+        h1 {
+            color: #9961BA;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .notification {
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-left: 15%;
+            text-align: left;
+            width: 70%;
+            border: 1px solid #9961BA;
+            background-color:  rgba(153, 97, 186, 0.2);
+        }
+
+         .notification:hover {
+            background-color: rgba(153, 97, 186, 0.4);
+        }
+        body {
+        font-family: Poppins;
         margin: 0;
         padding: 0;
     }
@@ -14,7 +34,8 @@
     .container {
         display: flex;
         flex-direction: row;
-        height: 100vh;
+        {#height: 100vh;#}
+
     }
 
     .section {
@@ -22,12 +43,14 @@
         padding: 20px;
         border: 1px solid #ccc;
         overflow-y: auto;
+        border: none;
     }
 
     .section-heading {
         font-size: 24px;
         font-weight: bold;
         margin-bottom: 10px;
+        text-align: left;
     }
 
     .messages {
@@ -44,10 +67,11 @@
 
     .message-content {
         font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
-</style>
-</head>
-<body>
+    </style>
     <div class="container">
         <div class="section">
             <h2 class="section-heading">My Parcel Request</h2>
@@ -55,6 +79,7 @@
                 {% for request in parcel_requests %}
                 <li class="message">
                     <div class="message-content">
+                    <div>
                         <p > <b> Sender : </b> {{ request.sender }} </p>
                         <p> <b> Receipent : </b> {{ request.recipient }} </p>
                         <p> <b> Source : </b> {{ request.source_city }} </p>
@@ -73,6 +98,12 @@
                             <button type="submit">Submit</button>
                         </form>
                     </div>
+                        <div>
+{#                            <img src="https://res.cloudinary.com/demo/image/upload/w_400/sample.jpg" height="230" width="360">#}
+{#                            <img src="../../../media/{{ request.image }}" height="230" width="360">#}
+                            <img src="/media/{{ request.image }}" height="230" width="360">
+                        </div>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
@@ -80,5 +111,9 @@
 
     </div>
 
-</body>
-</html>
+
+{% endblock %}
+
+
+
+

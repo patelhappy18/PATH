@@ -3,6 +3,8 @@
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
+from car_ride.models import Mycar
+from django import forms
 from PIL import Image
 
 
@@ -47,3 +49,26 @@ class ParcelService(models.Model):
     description = models.TextField()
     def __str__(self):
         return f"Parcel from {self.source} to {self.destination}"
+
+# class UserActivity(models.Model):
+#     user = models.CharField(max_length=255)
+#     activity = models.CharField(max_length=255)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#
+#     def __str__(self):
+#         return f'{self.user.username} - {self.activity}'
+
+class UserActivity(models.Model):
+    reqstr = models.CharField(max_length=255)
+    recvr = models.CharField(max_length=255)
+    REQUEST_STATUS_CHOICES = (
+        ('Requested', 'Requested'),
+        ('Accepted', 'Accepted'),
+        ('Declined', 'Declined'),
+    )
+    type=models.CharField(max_length=50, choices=REQUEST_STATUS_CHOICES, default="Requested")
+    msg = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.reqstr} - {self.msg}'

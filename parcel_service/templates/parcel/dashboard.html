@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Parcel Ride</title>
-<style>
+{% extends 'parcel/base.html' %}
+{% load static %}
+{% block body_block %}
+    <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')
+
     body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
         margin: 0;
         padding: 0;
     }
@@ -14,7 +14,8 @@
     .container {
         display: flex;
         flex-direction: row;
-        height: 100vh;
+        {#height: 100vh;#}
+
     }
 
     .section {
@@ -22,6 +23,7 @@
         padding: 20px;
         border: 1px solid #ccc;
         overflow-y: auto;
+        border: none;
     }
 
     .section-heading {
@@ -44,10 +46,12 @@
 
     .message-content {
         font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 </style>
-</head>
-<body>
+
     <div class="container">
         <div class="section">
             <h2 class="section-heading">My Parcel Ride</h2>
@@ -55,13 +59,19 @@
             <ul class="messages">
                 {% for ride in user_rides %}
                 <li class="message" onclick="showParcelRequests({{ ride.id }});">
+                
                     <div class="message-content">
-                        <p> Name : {{ ride.id }} </p>
-                        <p> Name : {{ ride.cust }} </p>
-                        <p> Source: {{ ride.from_place }} </p>
-                        <p> Destination: {{ ride.to_place }} </p>
-                        <a href="{% url 'parcel_service:parcel_request' ride.id %}">View Parcel Requests</a>
-
+                        <div>
+{#                        <p> Name : {{ ride.id }} </p>#}
+                            <p> <b>Name : </b>{{ ride.cust }} </p>
+                            <p> <b>Source: </b>{{ ride.from_place }} </p>
+                            <p> <b>Destination: </b>{{ ride.to_place }} </p>
+                            <a href="{% url 'parcel_service:parcel_request' ride.id %}">View Parcel Requests</a>
+                        </div>
+                        <div>
+{#                            <img src="https://res.cloudinary.com/demo/image/upload/w_400/sample.jpg" height="150" width="300">#}
+                            <img src="../../../media/{{ ride.car_img }}" height="150" width="300">
+                        </div>
                     </div>
                 </li>
                 {% endfor %}
@@ -69,6 +79,8 @@
         </div>
 
     </div>
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -124,5 +136,60 @@ function showParcelRequests(ride_id) {
 
 
 </script>
-</body>
-</html>
+{% endblock %}
+
+
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#<meta charset="UTF-8">#}
+{#<meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#<title>My Parcel Ride</title>#}
+{#<style>#}
+{#    body {#}
+{#        font-family: Arial, sans-serif;#}
+{#        margin: 0;#}
+{#        padding: 0;#}
+{#    }#}
+{##}
+{#    .container {#}
+{#        display: flex;#}
+{#        flex-direction: row;#}
+{#        height: 100vh;#}
+{#    }#}
+{##}
+{#    .section {#}
+{#        flex: 1;#}
+{#        padding: 20px;#}
+{#        border: 1px solid #ccc;#}
+{#        overflow-y: auto;#}
+{#    }#}
+{##}
+{#    .section-heading {#}
+{#        font-size: 24px;#}
+{#        font-weight: bold;#}
+{#        margin-bottom: 10px;#}
+{#    }#}
+{##}
+{#    .messages {#}
+{#        list-style-type: none;#}
+{#        padding: 0;#}
+{#    }#}
+{##}
+{#    .message {#}
+{#        margin-bottom: 10px;#}
+{#        padding: 10px;#}
+{#        background-color: #f9f9f9;#}
+{#        border: 1px solid #ddd;#}
+{#    }#}
+{##}
+{#    .message-content {#}
+{#        font-size: 14px;#}
+{#        #}
+{#    }#}
+{#</style>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#</body>#}
+{#</html>#}
