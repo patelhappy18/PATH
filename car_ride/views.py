@@ -108,6 +108,13 @@ def Addcar(request):
             form = AddcarForm(request.POST, request.FILES)
             print(form)
             if form.is_valid():
+                from_date = form.cleaned_data['from_date']
+                to_date = form.cleaned_data['to_date']
+
+                if to_date < from_date:
+                    form.add_error('to_date', 'To date cannot be less than from date.')
+                    return render(request, "addmycar.html", {'form': form})
+
                 form.instance.cust = request.user.customer
                 car_name = form.cleaned_data.get('car_name')
                 form.save()
@@ -126,7 +133,6 @@ def CustomerBookings(request):
         if request.user.is_authenticated:
             user = request.user
             cust = Customer.objects.get(usern=user)
-            mybook = Booking.objects.filter(name=cust)
             mycar = Mycar.objects.filter(cust=cust)
             otherbookings = Booking.objects.filter(car__in=mycar).exclude(name=cust)
             context = {'otherbookings': otherbookings}
@@ -195,9 +201,22 @@ def MyAccount(request):
         if request.user.is_authenticated:
             user = request.user
             cust = Customer.objects.get(usern=user)
-            # print(cust)
             context = {'cust': cust}
             return render(request, "myaccount.html", context)
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            user = request.user
+            cust = Customer.objects.get(usern=user)
+            # Update profile details based on form data
+            cust.fname = request.POST.get('fname')
+            cust.email = request.POST.get('email')
+            cust.mobile = request.POST.get('mobile')
+            cust.address = request.POST.get('address')
+            cust.city = request.POST.get('city')
+            cust.state = request.POST.get('state')
+            cust.save()
+            return redirect('car_ride:myaccount')  # Redirect to the same page after updating
+    return redirect('PATH:login')  # Redirect to login page if user is not authenticated
 
 def Cars(request):
     if request.method == 'GET':
@@ -380,12 +399,7 @@ def Cardetails(request, car_id):
             user = request.user
             cust = Customer.objects.get(usern=user)
             car = Mycar.objects.get(pk=car_id)
-            # if car.from_date != pickup:
-            #     messages.error(request, "This Car is not available. Please check Pick up date.")
-            #     return redirect('car_ride:cardetails', car_id=car_id)
-            # if car.to_date != dropoff:
-            #     messages.error(request, "This Car is not available. Please check Drop off date.")
-            #     return redirect('car_ride:cardetails', car_id=car_id)
+
             if car.total_seats < num_seats_booked:
                 messages.error(request, "Not enough seats available.")
                 return redirect('car_ride:cardetails', car_id=car_id)

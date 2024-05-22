@@ -80,7 +80,7 @@ def dashboard(request):
         user = request.user
 
         # Query the Mycar model to get all rides posted by the user
-        user_rides = Mycar.objects.filter(cust__usern=user)
+        user_rides = Mycar.objects.filter(cust__usern=user, is_parcel=True)
         all_parcel_requests = Parcel.objects.all()
         # # Pass the user's rides to the template
         # context = {

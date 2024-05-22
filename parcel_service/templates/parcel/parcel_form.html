@@ -97,6 +97,31 @@
      .custom-form > p > textarea  {
         width: 100% ;
     }
+      form input[type="text"], form input[type="date"], form input[type="number"], form input[type="file"], form select, textarea {
+    {#width: 250px;#}
+    padding: 8px;
+    margin-bottom: 1px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    }
+      button {
+            padding: 10px 20px;
+            background-color: #9961BA;
+            color: #FFFFFF;
+            border-color: #9961BA;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            {#width: 25%;#}
+            {#height: 7%;#}
+            margin-top: 0;
+            {#margin-left: 35%;#}
+            text-decoration: none;
+        }
+    button:hover {
+            background-color: #FFFFFF;
+            color: #9961BA;
+        }
     </style>
 
 {#{% for query in queries %}#}

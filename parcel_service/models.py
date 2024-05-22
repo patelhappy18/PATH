@@ -24,8 +24,8 @@ class Parcel(models.Model):
     )
     sender = models.CharField(max_length=150)
     recipient = models.CharField(max_length=150)
-    source_city = models.TextField()
-    destination_city = models.TextField()
+    source_city = models.TextField(null=True, blank=True)
+    destination_city = models.TextField(null=True, blank=True)
     description = models.TextField()
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     is_delivered = models.BooleanField(default=False)
@@ -59,15 +59,15 @@ class ParcelService(models.Model):
 #         return f'{self.user.username} - {self.activity}'
 
 class UserActivity(models.Model):
-    reqstr = models.CharField(max_length=255)
-    recvr = models.CharField(max_length=255)
+    reqstr = models.CharField(max_length=255, null=True, blank=True)
+    recvr = models.CharField(max_length=255, null=True, blank=True)
     REQUEST_STATUS_CHOICES = (
         ('Requested', 'Requested'),
         ('Accepted', 'Accepted'),
         ('Declined', 'Declined'),
     )
-    type=models.CharField(max_length=50, choices=REQUEST_STATUS_CHOICES, default="Requested")
-    msg = models.CharField(max_length=255)
+    type = models.CharField(max_length=50, choices=REQUEST_STATUS_CHOICES, default="Requested")
+    msg = models.CharField(max_length=255, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

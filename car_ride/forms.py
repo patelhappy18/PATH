@@ -14,6 +14,8 @@ class AddcarForm(forms.ModelForm):
         ('Medium (max 15 KG)', 'Medium (max 15 KG)'),
         ('Large (max 23 KG)', 'Large (max 23 KG)'),
     ]
+
+
     from_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     to_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     car_type = forms.ChoiceField(choices=CAR_TYPE_CHOICES, required=True)
@@ -21,7 +23,7 @@ class AddcarForm(forms.ModelForm):
     departure_time = forms.CharField(required=True, widget=forms.TimeInput(attrs={'type': 'time'}, format='%H:%M'))
     arrival_time = forms.CharField(required=True, widget=forms.TimeInput(attrs={'type': 'time'}, format='%H:%M'))
     is_parcel = forms.BooleanField(required=False, label='Are you taking Parcel?')
-    kilograms = forms.FloatField(required=False, label='Kilograms', initial=0)
+    kilograms = forms.FloatField(required=False, label='Parcel Fixed Charge', initial=0)
     luggage_details = forms.ChoiceField(choices=LUGGAGE_CHOICES, label='Luggage Details')
 
     class Meta:
@@ -34,6 +36,22 @@ class AddcarForm(forms.ModelForm):
         super(AddcarForm, self).__init__(*args, **kwargs)
 
 class SearchForm(forms.ModelForm):
+    # FROM_PLACE_CHOICES = [
+    #     ('Windsor', 'Windsor'),
+    #     ('Toronto', 'Toronto'),
+    #     ('Brampton', 'Brampton'),
+    #     ('London', 'London'),
+    # ]
+    # TO_PLACE_CHOICES = [
+    #     ('Windsor', 'Windsor'),
+    #     ('Toronto', 'Toronto'),
+    #     ('Brampton', 'Brampton'),
+    #     ('London', 'London'),
+    # ]
+    # from_place = forms.ChoiceField(choices=FROM_PLACE_CHOICES, label='From Place')
+    # to_place = forms.ChoiceField(choices=TO_PLACE_CHOICES, label='To Place')
+
+
     from_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     to_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
 
@@ -65,6 +83,7 @@ class ResetPasswordForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100)
 
 class CarForm(forms.ModelForm):
+
     class Meta:
         model = Mycar
         fields = ['car_name', 'car_type', 'company', 'car_num', 'from_place', 'to_place', 'from_date', 'to_date', 'departure_time', 'arrival_time', 'price', 'total_seats']

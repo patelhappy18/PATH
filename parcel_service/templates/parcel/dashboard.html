@@ -5,7 +5,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')
 
-    body {
+    body{
         font-family: "Poppins", sans-serif;
         margin: 0;
         padding: 0;
@@ -36,12 +36,32 @@
         list-style-type: none;
         padding: 0;
     }
-
+    .button {
+            padding: 10px 20px;
+            background-color: #9961BA;
+            color: #FFFFFF;
+            border-color: #9961BA;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 25%;
+            height: 7%;
+            margin-top: 0%;
+            {#margin-left: 35%;#}
+            text-decoration: none;
+        }
+    .button:hover {
+            background-color: #FFFFFF;
+            color: #9961BA;
+        }
     .message {
         margin-bottom: 10px;
-        padding: 10px;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
+        padding: 20px;
+        border: 2px solid #9961BA;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+        background-color: rgba(153, 97, 186, 0.2);
+        cursor: pointer;
     }
 
     .message-content {
@@ -66,7 +86,7 @@
                             <p> <b>Name : </b>{{ ride.cust }} </p>
                             <p> <b>Source: </b>{{ ride.from_place }} </p>
                             <p> <b>Destination: </b>{{ ride.to_place }} </p>
-                            <a href="{% url 'parcel_service:parcel_request' ride.id %}">View Parcel Requests</a>
+                            <a class="button"  href="{% url 'parcel_service:parcel_request' ride.id %}">View Parcel Requests</a>
                         </div>
                         <div>
 {#                            <img src="https://res.cloudinary.com/demo/image/upload/w_400/sample.jpg" height="150" width="300">#}

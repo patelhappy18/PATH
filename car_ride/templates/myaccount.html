@@ -12,6 +12,22 @@
             border-radius: 20px;
             box-shadow: none;
         }
+        button {
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: rgba(0, 0, 0, 0.7);
+            border-color: #9961BA;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 25%;
+            height: 7%;
+            margin-top: 0%;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 50px;
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
     </style>
 
     <div class="cssanimation sequence fadeInBottom">
@@ -20,38 +36,40 @@
                 <h3 style="color: white">User Details</h3>
             </div>
             <div class="content">
-                <form action="#" method="post">
+                <form action="" method="post">
+                {% csrf_token %}
                     {% if user.is_authenticated %}
                     <div class="user-details">
                         <div class="input-box">
                             <span class="details" style="color: white">Full Name</span>
-                            <input name="Name" value="{{cust.fname}}" style="border-radius: 50px; border-color: white">
+                            <input name="fname" value="{{cust.fname}}" style="border-radius: 50px; border-color: white">
                         </div>
                         <div class="input-box">
                             <span class="details" style="color: white">Username</span>
-                            <input name="Name" value="{{cust.usern}}" style="border-radius: 50px; border-color: white">
+                            <input name="usern" value="{{cust.usern}}" style="border-radius: 50px; border-color: white">
                         </div>
                         <div class="input-box">
                             <span class="details" style="color: white">Email</span>
-                            <input name="Name" value="{{cust.email}}" style="border-radius: 50px; border-color: white">
+                            <input name="email" value="{{cust.email}}" style="border-radius: 50px; border-color: white">
                         </div>
                         <div class="input-box">
                             <span class="details" style="color: white">Phone Number</span>
-                            <input name="Name" value="{{cust.mobile}}" style="border-radius: 50px; border-color: white">
+                            <input name="mobile" value="{{cust.mobile}}" style="border-radius: 50px; border-color: white">
                         </div>
                         <div class="input-box" style="width: 100%;">
                             <span class="details" style="color: white">Address</span>
-                            <input name="Name" value="{{cust.address}}" style="border-radius: 50px; border-color: white">
+                            <input name="address" value="{{cust.address}}" style="border-radius: 50px; border-color: white">
                         </div>
                         <div class="input-box">
                             <span class="details" style="color: white">City</span>
-                            <input name="Name" value="{{cust.city}}" style="border-radius: 50px; border-color: white">
+                            <input name="city" value="{{cust.city}}" style="border-radius: 50px; border-color: white">
                         </div>
                         <div class="input-box">
                             <span class="details" style="color: white">State</span>
-                            <input name="Name" value="{{cust.state}}" style="border-radius: 50px; border-color: white">
+                            <input name="state" value="{{cust.state}}" style="border-radius: 50px; border-color: white">
                         </div>
                     </div>
+                        <button style="border-radius: 50px; border-color: white;" type="submit">Update</button>
                     </form>
                     {% endif %}
                 </div>
